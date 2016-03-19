@@ -16,7 +16,7 @@ To start use a plain Raspbian OS with WLAN support and connect it for the initia
 * Edit the `hosts` inventory file and remove everything from group `[pis]`, add your ethernet based IP instead (1.2.3.4 here)
 * Run
 
-       ansible -i hosts setup-playbook.yml -k
+        ansible -i hosts setup-playbook.yml -k
 
 * Remove LAN cable and reboot. You Pi should connect to your WLAN router. Ideally your WLAN router has fixed IPs for you PIs configured. Add these IPs to your hosts file later on in group 'pis' (and others)
 * Repeat steps for each Pi.
@@ -28,12 +28,12 @@ When all Pis running and the proper IPs are entered you can re-run ansible with 
 * Hypriot Docker packages
 * iperf and hdparm for benchmarks installed
 * APT update
-* Copy of ``~/.ssh/id_dsa.pub` to `/home/pi/.ssh/authorized_keys`
+* Copy of `~/.ssh/id_dsa.pub` to `/home/pi/.ssh/authorized_keys`
 * Setup of `/etc/hosts` with the IPs of all nodes (named `n0`, `n1`, `n2`, `n3`)
 
 #### To come
 
-* Integration of Kurt Stams awesome [kuberbetes-installer-rpi](https://github.com/Project31/kubernetes-installer-rpi). See [his blog post](https://opensource.com/life/16/2/build-a-kubernetes-cloud-with-raspberry-pi) for more details
+* Integration of Kurt Stams awesome [kuberbetes-installer-rpi](https://github.com/Project31/kubernetes-installer-rpi). See [Kurt's blog post](https://opensource.com/life/16/2/build-a-kubernetes-cloud-with-raspberry-pi) for more details
 * Setting up OpenShift
 * fabric8
 
