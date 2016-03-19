@@ -25,7 +25,7 @@ When all Pis running and the proper IPs are entered you can re-run ansible with 
 
 #### Features
 
-* Hypriot Docker packages
+* [Hypriot Docker packages](http://blog.hypriot.com/downloads/)
 * iperf and hdparm for benchmarks installed
 * APT update
 * Copy of `~/.ssh/id_dsa.pub` to `/home/pi/.ssh/authorized_keys`
@@ -33,7 +33,7 @@ When all Pis running and the proper IPs are entered you can re-run ansible with 
 
 #### To come
 
-* Integration of Kurt Stams awesome [kuberbetes-installer-rpi](https://github.com/Project31/kubernetes-installer-rpi). See [Kurt's blog post](https://opensource.com/life/16/2/build-a-kubernetes-cloud-with-raspberry-pi) for more details
+* Integration of Kurt Stam's awesome [kuberbetes-installer-rpi](https://github.com/Project31/kubernetes-installer-rpi). See [Kurt's blog post](https://opensource.com/life/16/2/build-a-kubernetes-cloud-with-raspberry-pi) for more details
 * Setting up OpenShift
 * fabric8
 
