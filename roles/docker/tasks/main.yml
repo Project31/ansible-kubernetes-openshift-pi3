@@ -1,26 +1,26 @@
-  - name: Add overlay filesystem module
-    lineinfile: dest=/etc/modules state=present line="overlay" insertafter="EOF"
+- name: Add overlay filesystem module
+  lineinfile: dest=/etc/modules state=present line="overlay" insertafter="EOF"
 
-  - name: Load overlay module
-    modprobe: name=overlay state=present
+- name: Load overlay module
+  modprobe: name=overlay state=present
 
-  - name: Add apt-transport-https
-    apt: name='apt-transport-https' state=present force=yes
- 
-  - name: Add Hypriot Repo Key
-    apt_key: url=https://packagecloud.io/gpg.key
+- name: Add apt-transport-https
+  apt: name='apt-transport-https' state=present force=yes
 
-  - name: Add Hypriot Repo
-    apt_repository: repo='deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main' state=present
+- name: Add Hypriot Repo Key
+  apt_key: url=https://packagecloud.io/gpg.key
 
-  - name: Update APT package cache
-    apt: update_cache=yes
+- name: Add Hypriot Repo
+  apt_repository: repo='deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main' state=present
 
-  - name: Add docker-hypriot
-    apt: name='docker-hypriot' force=yes state=present
+- name: Update APT package cache
+  apt: update_cache=yes
 
-  - name: Enable Docker
-    service: name=docker enabled=yes state=started
+- name: Add docker-hypriot
+  apt: name='docker-hypriot' force=yes state=present
 
-  - name: Add user pi to group docker
-    user: name=pi groups=docker append=yes
+- name: Enable Docker
+  service: name=docker enabled=yes state=started
+
+- name: Add user pi to group docker
+  user: name=pi groups=docker append=yes
