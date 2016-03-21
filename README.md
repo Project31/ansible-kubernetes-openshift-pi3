@@ -2,6 +2,8 @@
 
 Here's a playground for setting up a Raspberry 3 cluster connected with WLAN and with Docker preinstalled.
 
+### Basic Setup
+
 To start use a plain Raspbian OS with WLAN support and connect it for the initial setup via Ethernet:
 
 * Install [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/) on a Micro SD card (Hypriot's [flash script](https://github.com/hypriot/flash) comes handy here)
@@ -18,10 +20,20 @@ To start use a plain Raspbian OS with WLAN support and connect it for the initia
 
         ansible -i hosts setup-playbook.yml -k
 
-* Remove LAN cable and reboot. You Pi should connect to your WLAN router. Ideally your WLAN router has fixed IPs for you PIs configured. Add these IPs to your hosts file later on in group 'pis' (and others)
+* Remove LAN cable and reboot. Your Pi should connect now to your WLAN router.
 * Repeat steps for each Pi.
 
+
+Finally add the WLAN IPs to the `hosts` file. Ideally your WLAN router has fixed IPs for your PIs configured. Add these IPs to your hosts file later on in group 'pis'. Select a single IP as `master` and the rest for `nodes`.
+Don't forget to given everyone a `name`, the master node should carry ``
+
 When all Pis running and the proper IPs are entered you can re-run ansible with the playbook any time (without -k option).
+
+### Install Kubernetes
+
+* Simply run
+
+       ansible -i hosts kubernetes-playbook.xml
 
 #### Features
 
@@ -33,7 +45,6 @@ When all Pis running and the proper IPs are entered you can re-run ansible with 
 
 #### To come
 
-* Integration of Kurt Stam's awesome [kuberbetes-installer-rpi](https://github.com/Project31/kubernetes-installer-rpi). See [Kurt's blog post](https://opensource.com/life/16/2/build-a-kubernetes-cloud-with-raspberry-pi) for more details
 * Setting up OpenShift
 * fabric8
 

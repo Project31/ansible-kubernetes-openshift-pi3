@@ -1,0 +1,24 @@
+- name: Install kubelet and kubectl
+  copy: src=binaries/{{ version.kubernetes }}/{{ item}} dest=/usr/bin/{{ item }} owner=root group=root mode=0755
+  with_items:
+    - kubelet
+    - kubectl
+
+- name: Create Kubernetes config directory
+  file: path=/etc/kubernetes/manifests/ state=directory recurse=no owner=root group=root mode=0755
+
+- name: Create etcd data directory
+  file: path=/var/lib/etcd state=directory recurse=false
+  when: mode == "master"
+
+- name: Copy configuration
+  template: src=kubernetes-{{ mode }}.yml dest=/etc/kubernetes/manifests/kubernetes.yaml
+
+- name: Setup profile
+  template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
+  
+- name: Install kubelet service definition
+  template: src=kubelet.service dest=/etc/systemd/system/kubelet.service owner=root group=root mode=0644
+
+- name: Enable and start kubelet service
+  service: name=kubelet enabled=true state=restarted

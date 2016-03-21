@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-master
+spec:
+  hostNetwork: true
+  volumes:
+  - name: "etcd-datadir"
+    hostPath:
+      path: /var/lib/etcd
+  containers:
+    - name: etcd
+      image: "{{ images.etcd }}"
+      args:
+        - "/usr/local/bin/etcd"
+        - "--data-dir=/var/etcd/data"
+        - "--advertise-client-urls=http://127.0.0.1:2379"
+        - "--listen-client-urls=http://127.0.0.1:2379"
+        - "--listen-peer-urls=http://127.0.0.1:2380"
+        - "--name=etcd"
+      volumeMounts:
+        - name: "etcd-datadir"
+          mountPath: /var/lib/etcd
+          readOnly: false
+    - name: "kube-apiserver"
+      image: "{{ images.hyperkube }}"
+      args:
+        - "/hyperkube"
+        - "apiserver"
+        - "--allow-privileged=true"
+        - "--etcd-servers=http://127.0.0.1:2379"
+        - "--insecure-bind-address=0.0.0.0"
+        - "--service-cluster-ip-range=10.200.100.0/24"
+        - "--service-node-port-range=30000-37000"
+        - "--v=2"
+    - name: "kube-controller-manager"
+      image: "{{ images.hyperkube }}"
+      args:
+        - "/hyperkube"
+        - "controller-manager"
+        - "--master=http://127.0.0.1:8080"
+        - "--v=2"
+    - name: "kube-scheduler"
+      image: "{{ images.hyperkube }}"
+      args:
+        - "/hyperkube"
+        - "scheduler"
+        - "--master=http://127.0.0.1:8080"
+        - "--v=2"
+    - name: "kube-proxy"
+      image: "{{ images.hyperkube }}"
+      args:
+        - "/hyperkube"
+        - "proxy"
+        - "--master=http://127.0.0.1:8080"
+        - "--v=2"
+      securityContext:
+        privileged: true

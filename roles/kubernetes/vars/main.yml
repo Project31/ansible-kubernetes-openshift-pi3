@@ -1,0 +1,6 @@
+version:
+  kubernetes: v1.2.0
+images:
+  hyperkube: gcr.io/google-containers/hyperkube-arm:{{ version.kubernetes }}
+  etcd: gcr.io/google-containers/etcd-arm:2.2.1
+  pause: gcr.io/google-containers/pause-arm:2.0

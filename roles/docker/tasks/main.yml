@@ -7,6 +7,9 @@
 - name: Add apt-transport-https
   apt: name='apt-transport-https' state=present force=yes
 
+- name: Setup profile
+  copy: src=docker_profile.sh dest=/etc/profile.d/docker.sh mode=0644
+
 - name: Add Hypriot Repo Key
   apt_key: url=https://packagecloud.io/gpg.key
 
@@ -19,8 +22,15 @@
 - name: Add docker-hypriot
   apt: name='docker-hypriot' force=yes state=present
 
-- name: Enable Docker
-  service: name=docker enabled=yes state=started
-
 - name: Add user pi to group docker
   user: name=pi groups=docker append=yes
+
+- name: Enable remote port for Docker
+  lineinfile:
+    dest: /etc/default/docker
+    regexp: '^\s*DOCKER_OPTS'
+    line: 'DOCKER_OPTS="-H tcp://{{ inventory_hostname }}:2375 -H unix:///var/run/docker.sock --storage-driver=overlay -D"'
+    state: present
+
+- name: Enable Docker
+  service: name=docker enabled=yes state=started

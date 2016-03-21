@@ -1,4 +1,18 @@
 ---
+- name: Add Swapfile
+  include: swap.yml
+  vars:
+    swap_file_path: "/swapfile"
+    swap_file_size: "1G"
+
+- name: Add cgroup for Memory limits to bootparams
+  lineinfile:
+    dest: /boot/cmdline.txt
+    regexp: '^(.*?)(\s*cgroup_enable.*swapaccount=\d+)?$'
+    line: '\1 cgroup_enable=memory swapaccount=1'
+    backrefs: true
+    state: present
+
 - name: Configure WiFi
   template: src=wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
 
@@ -28,7 +42,7 @@
 - name: Upgrade APT to the lastest packages
   apt: upgrade=safe
 
-- name: Install hdparm and iperf
+- name: Install support packages (hdparm, iperf)
   apt: name='{{ item }}' force=yes state=present
   with_items:
     - hdparm

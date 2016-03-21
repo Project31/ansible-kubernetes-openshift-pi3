@@ -1,12 +1,11 @@
 ---
-- name: Raspberry Pi Cluser with Kubernetes
+- name: Setup Raspberry Pi Cluser with Docker daemons
 
   hosts: pis
   remote_user: pi
   become: true
-  become_user: root
   become_method: sudo
-
+  
   roles:
   - init
   - docker
