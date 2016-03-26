@@ -47,3 +47,4 @@
   with_items:
     - hdparm
     - iperf
+    - mtr-tiny

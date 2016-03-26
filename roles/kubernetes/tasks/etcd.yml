@@ -1,0 +1,14 @@
+- name: Install etcd
+  copy: src=binaries/etcd-{{ version.etcd }}/{{ item}} dest=/usr/bin/{{ item }} owner=root group=root mode=0755
+  with_items:
+    - etcd
+    - etcdctl
+
+- name: Create etcd data dir directory
+  file: path=/var/lib/etcd state=directory recurse=false
+
+- name: Install etcd service definition
+  template: src=master/etcd.service dest=/lib/systemd/system/etcd.service owner=root group=root mode=0644
+
+- name: Enable and start etcd service
+  service: name=etcd enabled=true state=started

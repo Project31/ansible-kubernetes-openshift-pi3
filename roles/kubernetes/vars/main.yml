@@ -1,6 +1,16 @@
 version:
   kubernetes: v1.2.0
+  flannel: 0.5.5
+  etcd: 2.2.5
 images:
   hyperkube: gcr.io/google-containers/hyperkube-arm:{{ version.kubernetes }}
-  etcd: gcr.io/google-containers/etcd-arm:2.2.1
   pause: gcr.io/google-containers/pause-arm:2.0
+flannel:
+  backend: host-gw
+etcd:
+  port: 2379
+  peer_port: 2380
+network:
+  service_subnet: 10.200.100.0/24
+  pod_subnet: 10.1.0.0/16
+debug_level: 2

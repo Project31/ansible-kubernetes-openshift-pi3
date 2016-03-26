@@ -1,0 +1,14 @@
+- name: Install flanneld
+  copy: src=binaries/flannel-{{ version.flannel }}/flanneld dest=/usr/bin/flanneld owner=root group=root mode=0755
+
+- name: Create flannel env directory
+  file: path=/var/lib/flannel state=directory recurse=false
+
+- name: Add flannel_init.sh for setting flannel network
+  template: src={{ mode }}/flannel_init.sh dest=/etc/kubernetes/flannel_init.sh mode=0755
+
+- name: Install flannel service definition
+  template: src={{ mode }}/flannel.service dest=/lib/systemd/system/flannel.service owner=root group=root mode=0644
+
+- name: Enable and start flannel service
+  service: name=flannel enabled=true state=started

@@ -11,6 +11,6 @@ spec:
         - "/hyperkube"
         - "proxy"
         - "--master=http://{{ master }}:8080"
-        - "--v=2"
+        - "--v={{ debug_level }}"
       securityContext:
         privileged: true

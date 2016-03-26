@@ -1,5 +1,5 @@
 - name: Install kubelet and kubectl
-  copy: src=binaries/{{ version.kubernetes }}/{{ item}} dest=/usr/bin/{{ item }} owner=root group=root mode=0755
+  copy: src=binaries/kubernetes-{{ version.kubernetes }}/{{ item}} dest=/usr/bin/{{ item }} owner=root group=root mode=0755
   with_items:
     - kubelet
     - kubectl
@@ -7,18 +7,30 @@
 - name: Create Kubernetes config directory
   file: path=/etc/kubernetes/manifests/ state=directory recurse=no owner=root group=root mode=0755
 
-- name: Create etcd data directory
-  file: path=/var/lib/etcd state=directory recurse=false
+- name: Add etcd
+  include: etcd.yml
   when: mode == "master"
 
+- name: Add flanneld
+  include: flanneld.yml
+
+- name: Add bridge-utils
+  apt: name='bridge-utils' state=present force=yes
+
+- name: Install own docker service
+  template: src=docker.service dest=/lib/systemd/system/docker.service owner=root group=root mode=0644
+
+- name: Enable and restart docker service
+  service: name=docker enabled=true state=started
+
 - name: Copy configuration
-  template: src=kubernetes-{{ mode }}.yml dest=/etc/kubernetes/manifests/kubernetes.yaml
+  template: src={{ mode }}/kubernetes.yml dest=/etc/kubernetes/manifests/kubernetes.yaml
 
 - name: Setup profile
   template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
-  
+
 - name: Install kubelet service definition
-  template: src=kubelet.service dest=/etc/systemd/system/kubelet.service owner=root group=root mode=0644
+  template: src=kubelet.service dest=/lib/systemd/system/kubelet.service owner=root group=root mode=0644
 
 - name: Enable and start kubelet service
-  service: name=kubelet enabled=true state=restarted
+  service: name=kubelet enabled=true state=started

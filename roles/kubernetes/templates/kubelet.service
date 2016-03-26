@@ -1,14 +1,16 @@
 [Unit]
 Description=Kubernetes Kubelet
 Documentation=https://github.com/kubernetes/kubernetes
+After=network.target docker.service
+Requires=docker.service
 
 [Service]
 ExecStart=/usr/bin/kubelet  \
---api-servers=http://{{ master }}:8080 \
---allow-privileged=true \
---pod_infra_container_image={{ images.pause }} \
---config=/etc/kubernetes/manifests \
---v=2
+  --api-servers=http://{{ master }}:8080 \
+  --allow-privileged=true \
+  --pod_infra_container_image={{ images.pause }} \
+  --config=/etc/kubernetes/manifests \
+  --v={{ debug_level }}
 Restart=on-failure
 RestartSec=5
 

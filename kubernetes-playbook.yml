@@ -8,7 +8,8 @@
   roles:
   - role: kubernetes
     mode: master
-    master: "master"
+    # "master" must be an IP, otherwise flannel will core dump:
+    master: 192.168.23.200
 
 - name: Kubernetes Nodes
 
@@ -19,4 +20,4 @@
   roles:
   - role: kubernetes
     mode: node
-    master: "master"
+    master: 192.168.23.200

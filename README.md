@@ -51,3 +51,24 @@ When all Pis running and the proper IPs are entered you can re-run ansible with 
 #### Final words
 
 Bear with me, that my first Ansible playbook ;-)
+
+-------
+
+## OS X Nat
+
+* Enable IP forwarding:
+
+      sudo sysctl -w net.inet.ip.forwarding=1
+      sudo sysctl -w net.inet.ip.fw.enable=1
+
+* Create a pfctl rule in a file `nat-rules` with (en0: Interface with your connected IP, en5: WiFi connected to WiFi route):
+
+      nat on en0 from en5 to any -> (en0)
+
+* Apply the rule:
+
+      sudo pfctl -d #disables pfctl
+      sudo pfctl -F all #flushes all pfctl rules
+      sudo pfctl -f ./nat-rules -e #starts pfctl and loads the rules from the nat-rules file
+
+* Ensure in your WiFi Router that the nodes get the OS-X's IP 192.168.23.100 as router (either via DHCP or in the static routing)

@@ -1,0 +1,10 @@
+- name: Start Docker daemons
+
+  hosts: pis
+  remote_user: pi
+  become: true
+  become_method: sudo
+
+  tasks:
+  - name: Enable Docker
+    service: name=docker enabled=yes state=started

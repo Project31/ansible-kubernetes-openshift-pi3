@@ -25,12 +25,15 @@
 - name: Add user pi to group docker
   user: name=pi groups=docker append=yes
 
-- name: Enable remote port for Docker
+- name: Restart on Failure
   lineinfile:
-    dest: /etc/default/docker
-    regexp: '^\s*DOCKER_OPTS'
-    line: 'DOCKER_OPTS="-H tcp://{{ inventory_hostname }}:2375 -H unix:///var/run/docker.sock --storage-driver=overlay -D"'
+    dest: /lib/systemd/system/docker.service
+    insertafter: '\[Service\]'
+    line: "{{ item }}"
     state: present
+  with_items:
+    - "Restart=on-failure"
+    - "RestartSec=5"
 
 - name: Enable Docker
   service: name=docker enabled=yes state=started

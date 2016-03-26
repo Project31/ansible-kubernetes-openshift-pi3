@@ -1,0 +1,28 @@
+[Unit]
+Description=Docker Application Container Engine
+Documentation=https://docs.docker.com
+After=network.target docker.socket flannel.service
+Requires=docker.socket flannel.service
+
+[Service]
+Type=notify
+# Flannel bridge to use by Docker:
+EnvironmentFile=/var/lib/flannel/subnet.env
+ExecStartPre=-/sbin/ifconfig docker0 down
+ExecStartPre=-/sbin/brctl delbr docker0
+ExecStart=/usr/bin/docker daemon \
+    --bip=${FLANNEL_SUBNET} \
+    --mtu=${FLANNEL_MTU} \
+    -H tcp://{{ inventory_hostname }}:2375 \
+    -H unix:///var/run/docker.sock \
+    --storage-driver=overlay \
+    --exec-opt native.cgroupdriver=cgroupfs
+Restart=on-failure
+RestartSec=5
+MountFlags=slave
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target
