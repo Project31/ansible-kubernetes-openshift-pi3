@@ -1,3 +1,18 @@
+- name: Download Kubelet binaries
+  get_url:
+    url: https://github.com/rhuss/ansible-kubernetes-pi3/releases/download/v0.1.0/kubernetes-arm-bin-{{ version.kubernetes }}.tar.gz
+    dest: "{{ role_path}}/files/kubernetes-arm-bin-{{ version.kubernetes }}.tar.gz"
+  delegate_to: 127.0.0.1
+  when: mode == "master"
+
+- name: Untar Kubelet binaries
+  unarchive:
+    src: "{{ role_path}}/files/kubernetes-arm-bin-{{ version.kubernetes }}.tar.gz"
+    dest: "{{ role_path }}/files"
+    creates: "{{ role_path }}/files/binaries"
+  delegate_to: 127.0.0.1
+  when: mode == "master"
+
 - name: Install kubelet and kubectl
   copy: src=binaries/kubernetes-{{ version.kubernetes }}/{{ item}} dest=/usr/bin/{{ item }} owner=root group=root mode=0755
   with_items:
