@@ -1,4 +1,4 @@
-## Ansible Playbook for Docker / Kuberentes / OpenShift on RaspberryPIs 3
+## Ansible Playbook for Docker / Kubernetes / OpenShift on RaspberryPIs 3
 
 *This is work-in-progress, it might not work for you and things will change. Expect a Blog with more details soon.*
 
