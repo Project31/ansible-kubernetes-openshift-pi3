@@ -9,6 +9,7 @@ Here's a playground for setting up a Raspberry 3 cluster connected with WLAN and
 To start use a plain Raspbian OS with WLAN support and connect it for the initial setup via Ethernet:
 
 * Install [Raspbian Jessie Lite](https://www.raspberrypi.org/downloads/raspbian/) on a Micro SD card (Hypriot's [flash script](https://github.com/hypriot/flash) comes handy here)
+
 * Connect via ethernet to your LAN and detect the IP (either via nmap or by checking your DHCP logs)
 * SSH to the Pi and resize the disk
 
@@ -26,8 +27,7 @@ To start use a plain Raspbian OS with WLAN support and connect it for the initia
 * Repeat steps for each Pi.
 
 
-Finally add the WLAN IPs to the `hosts` file. Ideally your WLAN router has fixed IPs for your PIs configured. Add these IPs to your hosts file later on in group 'pis'. Select a single IP as `master` and the rest for `nodes`.
-Don't forget to given everyone a `name`, the master node should carry ``
+Finally add the WLAN IPs to the `hosts` file. Ideally your WLAN router has fixed IPs for your PIs configured when called via DHCP. Add these IPs to your hosts file later on in the Ansible group `pis`. Select a single IP as `master` and the rest for `nodes`. Don't forget to given everyone a `name`, the master node should carry also an `host_extra=master` attribute. See `hosts.exampple` for a full setup.
 
 When all Pis running and the proper IPs are entered you can re-run ansible with the playbook any time (without -k option).
 
