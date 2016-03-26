@@ -1,5 +1,7 @@
 ## Ansible Playbook for Docker / Kuberentes / OpenShift on RaspberryPIs 3
 
+*This is work-in-progress, it might not work for you and things will change. Expect a Blog with more details soon.*
+
 Here's a playground for setting up a Raspberry 3 cluster connected with WLAN and with Docker preinstalled.
 
 ### Basic Setup
@@ -31,17 +33,18 @@ When all Pis running and the proper IPs are entered you can re-run ansible with 
 
 ### Install Kubernetes
 
-* Simply run
+* Then simply run
 
-       ansible -i hosts kubernetes-playbook.xml
+        ansible -i hosts kubernetes-playbook.xml
 
 #### Features
 
 * [Hypriot Docker packages](http://blog.hypriot.com/downloads/)
-* iperf and hdparm for benchmarks installed
+* `iperf` and `hdparm` for benchmarks installed ( + `mtr`)
 * APT update
 * Copy of `~/.ssh/id_dsa.pub` to `/home/pi/.ssh/authorized_keys`
 * Setup of `/etc/hosts` with the IPs of all nodes (named `n0`, `n1`, `n2`, `n3`)
+* Look into `tools/` for additional goodies.
 
 #### To come
 
@@ -53,22 +56,3 @@ When all Pis running and the proper IPs are entered you can re-run ansible with 
 Bear with me, that my first Ansible playbook ;-)
 
 -------
-
-## OS X Nat
-
-* Enable IP forwarding:
-
-      sudo sysctl -w net.inet.ip.forwarding=1
-      sudo sysctl -w net.inet.ip.fw.enable=1
-
-* Create a pfctl rule in a file `nat-rules` with (en0: Interface with your connected IP, en5: WiFi connected to WiFi route):
-
-      nat on en0 from en5 to any -> (en0)
-
-* Apply the rule:
-
-      sudo pfctl -d #disables pfctl
-      sudo pfctl -F all #flushes all pfctl rules
-      sudo pfctl -f ./nat-rules -e #starts pfctl and loads the rules from the nat-rules file
-
-* Ensure in your WiFi Router that the nodes get the OS-X's IP 192.168.23.100 as router (either via DHCP or in the static routing)
