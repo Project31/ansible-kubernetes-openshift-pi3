@@ -1,0 +1,9 @@
+- name: Verify ~/.ssh
+  file: path="/home/pi/.ssh" state=directory recurse=no owner=pi group=pi
+
+- name: Copy SSH Key
+  copy: src="{{ ssh.pub_key_path }}" dest=/home/pi/.ssh/authorized_keys mode=0600 owner=pi group=pi
+
+- name: Set user password
+  user: name=pi password="{{ user.password }}"
+  when: user is defined and user.password is defined

@@ -1,0 +1,9 @@
+- name: Upgrade APT to the lastest packages
+  apt: upgrade=safe
+
+- name: Install support packages
+  apt: name='{{ item }}' force=yes state=present
+  with_items:
+    - hdparm
+    - iperf
+    - mtr-tiny

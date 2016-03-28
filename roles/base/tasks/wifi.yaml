@@ -1,0 +1,6 @@
+- name: Configure WiFi
+  template: src=wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
+
+- name: Switch off power management for WiFi
+  lineinfile: dest=/etc/network/interfaces state=present line="wireless-power off" insertafter="^iface wlan0"
+  
