@@ -5,7 +5,7 @@ After=network.target
 [Service]
 ExecStartPre=/etc/kubernetes/flannel_init.sh
 ExecStart=/usr/bin/flanneld \
-     --etcd-endpoints=http://{{ master }}:{{ etcd.port }} \
+     --etcd-endpoints=http://master:{{ etcd.port }} \
      --subnet-file=/var/lib/flannel/subnet.env
 Restart=on-failure
 RestartSec=5

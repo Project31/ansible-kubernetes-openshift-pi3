@@ -11,7 +11,7 @@ spec:
         - "/hyperkube"
         - "apiserver"
         - "--allow-privileged=true"
-        - "--etcd-servers=http://{{ master }}:{{ etcd.port }}"
+        - "--etcd-servers=http://master:{{ etcd.port }}"
         - "--insecure-bind-address=0.0.0.0"
         - "--service-cluster-ip-range={{ network.service_subnet }}"
         - "--service-node-port-range=30000-37000"

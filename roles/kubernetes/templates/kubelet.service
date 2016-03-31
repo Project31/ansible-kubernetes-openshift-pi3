@@ -6,7 +6,7 @@ Requires=docker.service
 
 [Service]
 ExecStart=/usr/bin/kubelet  \
-  --api-servers=http://{{ master }}:8080 \
+  --api-servers=http://master:8080 \
   --allow-privileged=true \
   --pod_infra_container_image={{ images.pause }} \
   --config=/etc/kubernetes/manifests \

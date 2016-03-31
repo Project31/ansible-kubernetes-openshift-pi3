@@ -1,0 +1,11 @@
+etcd:
+  port: 2379
+network:
+  service_subnet: 10.200.100.0/24
+  pod_subnet: 10.1.0.0/16
+version:
+  kubernetes: 1.2.0
+images:
+  hyperkube: gcr.io/google-containers/hyperkube-arm:v{{ version.kubernetes }}
+  pause: gcr.io/google-containers/pause-arm:2.0
+debug_level: 2

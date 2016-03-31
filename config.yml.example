@@ -11,3 +11,25 @@ wifi:
 # Need to be hashed as coming from 'mkpasswd'. Can be omitted, then the default password ('raspberry') is used
 user:
   password: "<hashed password>"
+
+# Default values
+
+etcd:
+  port: 2379
+  peer_port: 2380
+flannel:
+  backend: host-gw
+network:
+  service_subnet: 10.200.100.0/24
+  pod_subnet: 10.1.0.0/16
+images:
+  hyperkube: gcr.io/google-containers/hyperkube-arm:v{{ version.kubernetes }}
+  pause: gcr.io/google-containers/pause-arm:2.0
+debug_level: 2
+
+# Versions:
+version:
+  etcd: 2.2.5
+  flannel: 0.5.5
+  kubernetes: 1.2.0
+  openshift: 1.1.5-pre

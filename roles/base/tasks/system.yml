@@ -6,6 +6,15 @@
     backrefs: true
     state: present
 
+- name: Add overlay filesystem module
+  lineinfile: dest=/etc/modules state=present line="overlay" insertafter="EOF"
+
+- name: Load overlay module
+  modprobe: name=overlay state=present
+
+- name: Setup profile
+  copy: src=docker_profile.sh dest=/etc/profile.d/docker.sh mode=0644
+
 - name: Set timezone variables
   copy:
     content: "{{ timezone }}"

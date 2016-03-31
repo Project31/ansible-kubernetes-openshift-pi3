@@ -1,31 +1,23 @@
 ---
-- name: Kubernetes Master
+- name: OpenShift Master
 
   hosts: master
   remote_user: pi
   become: true
 
   roles:
-  - etcd
-  - role: flannel
+  - role: openshift
     mode: master
     # "master" must be an IP, otherwise flannel will core dump:
     master: 192.168.23.200
-  - docker
-  - role: kubernetes
-    mode: master
 
-- name: Kubernetes Nodes
+- name: OpenShift Nodes
 
   hosts: nodes
   remote_user: pi
   become: true
 
   roles:
-  - role: flannel
+  - role: openshift
     mode: node
-    # "master" must be an IP, otherwise flannel will core dump:
     master: 192.168.23.200
-  - docker
-  - role: kubernetes
-    mode: node

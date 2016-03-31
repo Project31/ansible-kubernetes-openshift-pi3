@@ -1,39 +1,5 @@
-- name: Add overlay filesystem module
-  lineinfile: dest=/etc/modules state=present line="overlay" insertafter="EOF"
+- name: Install own docker service
+  template: src=docker.service dest=/lib/systemd/system/docker.service owner=root group=root mode=0644
 
-- name: Load overlay module
-  modprobe: name=overlay state=present
-
-- name: Add apt-transport-https
-  apt: name='apt-transport-https' state=present force=yes
-
-- name: Setup profile
-  copy: src=docker_profile.sh dest=/etc/profile.d/docker.sh mode=0644
-
-- name: Add Hypriot Repo Key
-  apt_key: url=https://packagecloud.io/gpg.key
-
-- name: Add Hypriot Repo
-  apt_repository: repo='deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main' state=present
-
-- name: Update APT package cache
-  apt: update_cache=yes
-
-- name: Add docker-hypriot
-  apt: name='docker-hypriot' force=yes state=present
-
-- name: Add user pi to group docker
-  user: name=pi groups=docker append=yes
-
-- name: Restart on Failure
-  lineinfile:
-    dest: /lib/systemd/system/docker.service
-    insertafter: '\[Service\]'
-    line: "{{ item }}"
-    state: present
-  with_items:
-    - "Restart=on-failure"
-    - "RestartSec=5"
-
-- name: Enable Docker
-  service: name=docker enabled=yes state=started
+- name: Enable and restart docker service
+  service: name=docker enabled=true state=started

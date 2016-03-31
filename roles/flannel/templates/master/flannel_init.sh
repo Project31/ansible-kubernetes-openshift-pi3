@@ -18,4 +18,4 @@ EOT
 echo "Setting network config for flannel: "
 /usr/bin/etcdctl \
    --endpoint ${etcd_url} \
-  set /coreos.com/network/config "$network_config"
+  set /coreos.com/network/config "${network_config}"

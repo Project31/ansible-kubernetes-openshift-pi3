@@ -1,0 +1,9 @@
+etcd:
+  port: 2379
+flannel:
+  backend: host-gw
+network:
+  service_subnet: 10.200.100.0/24
+  pod_subnet: 10.1.0.0/16
+version:
+  flannel: 0.5.5

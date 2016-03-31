@@ -1,5 +1,11 @@
 - name: Install flanneld
-  copy: src=binaries/flannel-{{ version.flannel }}/flanneld dest=/usr/bin/flanneld owner=root group=root mode=0755
+  include: ../../includes/install_binaries.yml
+  vars:
+    binaries:
+      name: flannel
+      version: "{{ version.flannel }}"
+      commands:
+        - flanneld
 
 - name: Create flannel env directory
   file: path=/var/lib/flannel state=directory recurse=false

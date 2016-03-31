@@ -7,3 +7,6 @@
 - name: Set user password
   user: name=pi password="{{ user.password }}"
   when: user is defined and user.password is defined
+
+- name: Add user pi to group docker
+  user: name=pi groups=docker append=yes

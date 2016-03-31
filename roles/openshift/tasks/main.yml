@@ -1,0 +1,12 @@
+- name: Disable and stop kubelet service
+  service: name=kubelet enabled=false state=stopped
+
+- name: Install OpenShift
+  include: ../../includes/install_binaries.yml
+  vars:
+    binaries:
+      name: openshift-origin
+      version: "{{ version.openshift }}"
+      commands:
+        - oc
+        - openshift

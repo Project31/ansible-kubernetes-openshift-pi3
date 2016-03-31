@@ -1,2 +1,4 @@
 hosts
 config.yml
+bin/
+*.tar.gz

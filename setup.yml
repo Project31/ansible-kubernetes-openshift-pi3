@@ -1,5 +1,5 @@
 ---
-- name: Setup Raspberry Pi Cluster with Docker daemons
+- name: Setup Raspberry Pi Base system
 
   hosts: pis
   remote_user: pi
@@ -10,4 +10,3 @@
 
   roles:
     - base
-    - docker

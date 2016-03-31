@@ -1,0 +1,19 @@
+
+- name: Install etcd
+  include: ../../includes/install_binaries.yml
+  vars:
+    binaries:
+      name: etcd
+      version: "{{ version.etcd }}"
+      commands:
+        - etcd
+        - etcdctl
+
+- name: Create etcd data dir directory
+  file: path=/var/lib/etcd state=directory recurse=false
+
+- name: Install etcd service definition
+  template: src=etcd.service dest=/lib/systemd/system/etcd.service owner=root group=root mode=0644
+
+- name: Enable and start etcd service
+  service: name=etcd enabled=true state=started

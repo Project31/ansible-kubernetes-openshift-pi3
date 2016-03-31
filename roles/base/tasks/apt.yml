@@ -1,9 +1,28 @@
-- name: Upgrade APT to the lastest packages
-  apt: upgrade=safe
+- name: Add apt-transport-https
+  apt:
+    name: 'apt-transport-https'
+    state: present
+    force: yes
 
-- name: Install support packages
-  apt: name='{{ item }}' force=yes state=present
+- name: Add Hypriot Repo Key
+  apt_key: url=https://packagecloud.io/gpg.key
+
+- name: Add Hypriot Repo
+  apt_repository: repo='deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main' state=present
+
+- name: Update APT package cache
+  apt:
+    update_cache: yes
+    upgrade: safe
+
+- name: Install Packages
+  apt:
+    name: "{{ item }}"
+    force: yes
+    state: present
   with_items:
     - hdparm
     - iperf
     - mtr-tiny
+    - docker-hypriot
+    - bridge-utils

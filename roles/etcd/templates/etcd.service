@@ -6,9 +6,9 @@ After=network.target
 [Service]
 ExecStart=/usr/bin/etcd  \
   --data-dir=/var/lib/etcd \
-  --advertise-client-urls=http://{{ master }}:{{ etcd.port }} \
-  --listen-client-urls=http://{{ master }}:{{ etcd.port }} \
-  --listen-peer-urls=http://{{ master }}:{{ etcd.peer_port }} \
+  --advertise-client-urls=http://master:{{ etcd.port }} \
+  --listen-client-urls=http://master:{{ etcd.port }} \
+  --listen-peer-urls=http://master:{{ etcd.peer_port }} \
   --name=etcd
 Restart=on-failure
 RestartSec=5

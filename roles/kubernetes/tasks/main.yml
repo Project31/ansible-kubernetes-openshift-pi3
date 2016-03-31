@@ -1,45 +1,19 @@
-- name: Download Kubelet binaries
-  get_url:
-    url: https://github.com/rhuss/ansible-kubernetes-pi3/releases/download/v0.1.0/kubernetes-arm-bin-{{ version.kubernetes }}.tar.gz
-    dest: "{{ role_path}}/files/kubernetes-arm-bin-{{ version.kubernetes }}.tar.gz"
-  delegate_to: 127.0.0.1
-  when: mode == "master"
 
-- name: Untar Kubelet binaries
-  unarchive:
-    src: "{{ role_path}}/files/kubernetes-arm-bin-{{ version.kubernetes }}.tar.gz"
-    dest: "{{ role_path }}/files"
-    creates: "{{ role_path }}/files/binaries"
-  delegate_to: 127.0.0.1
-  when: mode == "master"
-
-- name: Install kubelet and kubectl
-  copy: src=binaries/kubernetes-{{ version.kubernetes }}/{{ item}} dest=/usr/bin/{{ item }} owner=root group=root mode=0755
-  with_items:
-    - kubelet
-    - kubectl
+- name: Install Kubernetes
+  include: ../../includes/install_binaries.yml
+  vars:
+    binaries:
+      name: kubernetes
+      version: "{{ version.kubernetes }}"
+      commands:
+        - kubelet
+        - kubectl
 
 - name: Create Kubernetes config directory
   file: path=/etc/kubernetes/manifests/ state=directory recurse=no owner=root group=root mode=0755
 
-- name: Add etcd
-  include: etcd.yml
-  when: mode == "master"
-
-- name: Add flanneld
-  include: flanneld.yml
-
-- name: Add bridge-utils
-  apt: name='bridge-utils' state=present force=yes
-
-- name: Install own docker service
-  template: src=docker.service dest=/lib/systemd/system/docker.service owner=root group=root mode=0644
-
-- name: Enable and restart docker service
-  service: name=docker enabled=true state=started
-
 - name: Copy configuration
-  template: src={{ mode }}/kubernetes.yml dest=/etc/kubernetes/manifests/kubernetes.yaml
+  template: src=kubernetes-{{ mode }}.yml dest=/etc/kubernetes/manifests/kubernetes.yaml
 
 - name: Setup profile
   template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644

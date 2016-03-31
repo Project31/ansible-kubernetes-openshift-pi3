@@ -1,0 +1,16 @@
+- name: Download Binaries
+  get_url:
+    url: https://github.com/rhuss/ansible-kubernetes-pi3/releases/download/v0.1.0/{{ binaries.name }}-arm-bin-{{ binaries.version }}.tar.gz
+    dest: "{{ role_path }}/files/{{ binaries.name }}-arm-bin-{{ binaries.version }}.tar.gz"
+  delegate_to: 127.0.0.1
+
+- name: Untar Binaries
+  unarchive:
+    src: "{{ role_path}}/files/{{ binaries.name }}-arm-bin-{{ binaries.version }}.tar.gz"
+    dest: "{{ role_path }}/files"
+    creates: "{{ role_path }}/files/bin"
+  delegate_to: 127.0.0.1
+
+- name: Install Binaries
+  copy: src=bin/{{ item }} dest=/usr/bin/{{ item }} owner=root group=root mode=0755
+  with_items: binaries.commands
