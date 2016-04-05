@@ -17,25 +17,31 @@ To start use a plain Raspbian OS with WLAN support and connect it for the initia
         $ sudo raspi-config
         # Select first menu item, then reboot
 
-* Copy `group_vars/pis/credentials-sample.yml` to `group_vars/pis/credentials.yml` and enter your WLAN SID and preshared key in the file. Add a hashed user password which is replacing 'raspberry' (use `mkpasswd` on a Linux system).
-* Edit the `hosts` inventory file and remove everything from group `[pis]`, add your ethernet based IP instead (1.2.3.4 here)
+* Copy `config.yml.example` to `config.yml` and enter your WLAN SID and preshared key in the file. Add a hashed user password which is replacing 'raspberry' (use `mkpasswd` on a Linux system). But you can leave this out to keep the original password.
+* Copy `setup-host.example` to `setup-host` and add the single IP
 * Run
 
-        ansible -i hosts setup-playbook.yml -k
+        ansible -i setup-host setup.yml -k
 
 * Remove LAN cable and reboot. Your Pi should connect now to your WLAN router.
 * Repeat steps for each Pi.
 
 
-Finally add the WLAN IPs to the `hosts` file. Ideally your WLAN router has fixed IPs for your PIs configured when called via DHCP. Add these IPs to your hosts file later on in the Ansible group `pis`. Select a single IP as `master` and the rest for `nodes`. Don't forget to given everyone a `name`, the master node should carry also an `host_extra=master` attribute. See `hosts.example` for a full setup.
+Copy over `hosts.example` to `hosts` and add all the WLAN IPs to this `hosts` file. Ideally your WLAN router has fixed IPs for your PIs configured when called via DHCP. Add these IPs to your hosts file later on in the Ansible group `pis`. Select a single IP as `master` and the rest for `nodes`. Don't forget to given everyone a `name`, the master node should carry also an `host_extra=master` attribute. See `hosts.example` for a full setup.
 
-When all Pis running and the proper IPs are entered you can re-run ansible with the playbook any time (without -k option).
+Now run
+
+    ansible -i hosts setup.yml
+
+to configure the initial cluster.
+
+The hard stuff is done now.
 
 ### Install Kubernetes
 
 * Then simply run
 
-        ansible -i hosts kubernetes-playbook.xml
+        ansible -i hosts kubernetes.xml
 
 #### Features
 
