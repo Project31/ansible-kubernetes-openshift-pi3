@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: kube-dns-v8
+  name: kube-dns
   namespace: kube-system
   labels:
     k8s-app: kube-dns
@@ -34,7 +34,6 @@ spec:
         - http://127.0.0.1:2379,http://localhost:4001
         - --advertise-client-urls
         - http://127.0.0.1:2379,http://localhost:4001
-
         - --initial-cluster-token
         - skydns-etcd
         volumeMounts:
@@ -51,7 +50,7 @@ spec:
 #        command = "/kube2sky"
         - -domain={{ dns.domain }}
         - -etcd-server=http://127.0.0.1:2379
-        - -kube_master_url=http://master:8080
+        - -kube_master_url=http://{{ master_ip }}:8080
       - name: skydns
         image: {{ images.sky_dns }}
         imagePullPolicy: IfNotPresent

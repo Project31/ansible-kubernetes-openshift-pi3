@@ -1,0 +1,15 @@
+- name: Extract master IP into variable master_ip
+  command: sh -c "grep master /etc/hosts | awk '{print $1}'"
+  register: master_from_hosts
+
+- set_fact: master_ip={{ master_from_hosts.stdout }}
+
+- name: Copy configuration
+  template: src=skydns-rc-svc.yml dest=/etc/kubernetes/skydns-rc-svc.yml
+
+- name: Remove previous controller & service (but ignore if failing)
+  command: kubectl --namespace=kube-system delete rc,svc kube-dns
+  ignore_errors: yes
+
+- name: Install SkyDNS RC and Service
+  command: kubectl create -f /etc/kubernetes/skydns-rc-svc.yml

@@ -7,6 +7,12 @@
       commands:
         - flanneld
 
+- name: Extract master IP into variable master_ip
+  command: sh -c "grep master /etc/hosts | awk '{print $1}'"
+  register: master_from_hosts
+
+- set_fact: master_ip={{ master_from_hosts.stdout }}
+
 - name: Create flannel env directory
   file: path=/var/lib/flannel state=directory recurse=false
 

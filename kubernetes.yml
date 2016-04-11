@@ -9,8 +9,6 @@
   - etcd
   - role: flannel
     mode: master
-    # "master" must be an IP, otherwise flannel will core dump:
-    master: 192.168.23.200
   - docker
   - role: kubernetes
     mode: master
@@ -24,8 +22,6 @@
   roles:
   - role: flannel
     mode: node
-    # "master" must be an IP, otherwise flannel will core dump:
-    master: 192.168.23.200
   - docker
   - role: kubernetes
     mode: node

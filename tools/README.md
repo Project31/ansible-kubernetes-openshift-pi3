@@ -1,7 +1,7 @@
 
 ## setup_nat_on_osx.sh
 
-This is a small script for setting up NAT in order to connect an OS X machine to the cluster. It expects
+This is a small script for setting up NAT in order to let  an OS X machine forward traffic from the cluster. It expects
 two arguments, the first is your external interface to the the internet (e.g. `en0`), the other the WiFi interface used to connect to the cluster.
 
 The steps in details, shamelessly stolen from this [StackExchange answer](http://apple.stackexchange.com/a/192183):

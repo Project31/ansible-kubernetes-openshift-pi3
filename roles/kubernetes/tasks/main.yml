@@ -15,6 +15,10 @@
 - name: Copy configuration
   template: src=kubernetes-{{ mode }}.yml dest=/etc/kubernetes/manifests/kubernetes.yaml
 
+- name: Setup system parameters (boot, hosts, timzone)
+  include: skydns.yml
+  when: mode == 'master'
+
 - name: Setup profile
   template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
 
