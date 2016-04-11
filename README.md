@@ -1,8 +1,10 @@
-## Ansible Playbook for Docker / Kubernetes / OpenShift on RaspberryPIs 3
+## Ansible Playbook for Docker / Kubernetes / OpenShift on RaspberryPis 3
 
 *This is work-in-progress, it might not work for you and things will change. Expect a Blog with more details soon.*
 
 Here's a playground for setting up a Raspberry 3 cluster connected with WLAN and with Docker preinstalled.
+
+[Ansible](https://www.ansible.com/) is used to install Kubernetes / OpenShift. So as single prerequisite (beside the Pi hardware of course ;-) is to have a working Ansible 2 installation on your Desktop. *Ansible is not required on the Pis*. The given Ansible playbooks are applied via SSH to the Pis. Ansbible can be easily installed, e.g. for OS X users its best done via `brew install ansible`.
 
 ### Basic Setup
 
