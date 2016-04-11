@@ -48,16 +48,17 @@ The hard stuff is done now.
 #### Features
 
 * [Hypriot Docker packages](http://blog.hypriot.com/downloads/)
-* `iperf` and `hdparm` for benchmarks installed ( + `mtr`)
-* APT update
-* Copy of `~/.ssh/id_dsa.pub` to `/home/pi/.ssh/authorized_keys`
-* Setup of `/etc/hosts` with the IPs of all nodes (named `n0`, `n1`, `n2`, `n3`)
+* Base features:
+  - `iperf`, `hdparm`, `mtr` for benchmark and tracerouting
+  - Copy of `~/.ssh/id_dsa.pub` to `/home/pi/.ssh/authorized_keys`
+  - Setup of `/etc/hosts` with the IPs of all cluster nodes (named `n0`, `n1`, `n2`, `n3`)
+* Kubernetes:
+  - `flanneld` as overlay network
+  - `SkyDNS` for service discovery
+* OpenShift:
+  - *[tbd]*
 * Look into `tools/` for additional goodies.
-
-#### To come
-
-* Setting up OpenShift
-* fabric8
+  - Howto setup NAT on OS X to route traffic from the Pis to the rest of the world
 
 #### Final words
 
