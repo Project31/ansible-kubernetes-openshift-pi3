@@ -22,6 +22,8 @@ spec:
         - "/hyperkube"
         - "controller-manager"
         - "--master=http://127.0.0.1:8080"
+        - "--pod-eviction-timeout={{ k8s.pod_eviction_timeout }}"
+        - "--node-monitor-grace-period={{ k8s.node_monitor_grace_period }}"
         - "--v={{ debug_level }}"
     - name: "kube-scheduler"
       image: "{{ images.hyperkube }}"
