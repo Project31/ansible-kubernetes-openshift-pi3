@@ -1,6 +1,6 @@
 - name: Download Binaries
   get_url:
-    url: https://github.com/rhuss/ansible-kubernetes-pi3/releases/download/v0.1.0/{{ binaries.name }}-arm-bin-{{ binaries.version }}.tar.gz
+    url: https://github.com/Project31/ansible-kubernetes-openshift-pi3/releases/download/v0.1.0/{{ binaries.name }}-arm-bin-{{ binaries.version }}.tar.gz
     dest: "{{ role_path }}/files/{{ binaries.name }}-arm-bin-{{ binaries.version }}.tar.gz"
   delegate_to: 127.0.0.1
 

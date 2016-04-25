@@ -16,6 +16,9 @@
 - name: Create flannel env directory
   file: path=/var/lib/flannel state=directory recurse=false
 
+- name: Ensure that target directory /etc/kubernetes exists
+  file: path=/etc/kubernetes state=directory recurse=false
+
 - name: Add flannel_init.sh for setting flannel network
   template: src={{ mode }}/flannel_init.sh dest=/etc/kubernetes/flannel_init.sh mode=0755
 
