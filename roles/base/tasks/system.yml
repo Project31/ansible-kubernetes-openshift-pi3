@@ -1,8 +1,8 @@
 - name: Add cgroup for Memory limits to bootparams
   lineinfile:
     dest: /boot/cmdline.txt
-    regexp: '^(.*?)(\s*cgroup_enable.*swapaccount=\d+)?$'
-    line: '\1 cgroup_enable=memory cgroup_enable=cpuset swapaccount=1'
+    regexp: '^(.*?)(\s*cgroup_enable.*swapaccount=\d+\s*)?$'
+    line: '\1 cgroup_enable=memory swapaccount=1'
     backrefs: true
     state: present
 
@@ -30,6 +30,14 @@
 - name: Add hosts
   template: src=hosts dest=/etc/hosts
 
+- stat: path=/etc/dhcp/dhclient-enter-hooks.d
+  register: dhclient_hooks
+- name: Copy hosts to DHCP setup
+  template: src=hosts dest=/etc/dhcp
+  when: dhclient_hooks.stat.exists
+- name: Add DHCP hook to copy etc hosts
+  copy: src=copy_hosts dest=/etc/dhcp/dhclient-enter-hooks.d/ mode=0755
+
 - name: Set hostname
   hostname: name="{{ name }}"
 
@@ -47,5 +55,22 @@
     state: link
   when: ld.stat.exists
 
-- name: No DNS lookup with SSHD
-  lineinfile: dest=/etc/ssh/sshd_config line="UseDNS no" insertafter="EOF"
+  # Needed only for hypriot
+- stat: path=/boot/device-init.yaml
+  register: device_init_file
+- name: Set hostname in boot configuration
+  lineinfile:
+    dest: /boot/device-init.yaml
+    regexp: '^(.*hostname:)\s*(.*?)\s*$'
+    line: '\1 {{ name }}'
+    backrefs: true
+    state: present
+  when: device_init_file.stat.exists
+
+- name: Add useDns=no to /etc/ssh/sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config state=present line="UseDNS no" insertafter="EOF"
+
+#- name: Restart hostname
+#  service: name=hostname state=restarted
+#  async: 45
+#  poll: 0
