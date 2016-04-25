@@ -2,15 +2,10 @@
 # You timezone
 timezone: "Europe/Berlin"
 
-# Wifi credentials
-wifi:
-  ssid: "<ssid>"
-  password: "<wlan psk>"
-
 # User pi's password.
 # Need to be hashed as coming from 'mkpasswd'. Can be omitted, then the default password ('raspberry') is used
-user:
-  password: "<hashed password>"
+# user:
+#  password: "<hashed password>"
 
 # Default values
 

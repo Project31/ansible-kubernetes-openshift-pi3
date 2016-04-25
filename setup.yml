@@ -2,7 +2,7 @@
 - name: Setup Raspberry Pi Base system
 
   hosts: pis
-  remote_user: pi
+  remote_user: pirate
   become: true
   become_method: sudo
   vars_files:

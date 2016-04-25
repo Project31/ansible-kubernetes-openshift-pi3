@@ -1,6 +1,7 @@
+# This is only needed if not already setup. E.g. when using Raspian instead of the Hypriot image, this
+# might be useful
 - name: Configure WiFi
   template: src=wpa_supplicant.conf dest=/etc/wpa_supplicant/wpa_supplicant.conf mode=0600
 
 - name: Switch off power management for WiFi
-  lineinfile: dest=/etc/network/interfaces state=present line="wireless-power off" insertafter="^iface wlan0"
-  
+  lineinfile: dest=/etc/network/interfaces.d/wlan0 state=present line="wireless-power off" insertafter="^iface wlan0"
