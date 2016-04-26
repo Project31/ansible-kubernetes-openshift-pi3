@@ -70,7 +70,5 @@
 - name: Add useDns=no to /etc/ssh/sshd_config
   lineinfile: dest=/etc/ssh/sshd_config state=present line="UseDNS no" insertafter="EOF"
 
-#- name: Restart hostname
-#  service: name=hostname state=restarted
-#  async: 45
-#  poll: 0
+- name: Restart hostname
+  shell: "hostnamectl set-hostname {{ name }}"
