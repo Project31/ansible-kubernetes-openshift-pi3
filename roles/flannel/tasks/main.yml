@@ -24,6 +24,10 @@
 
 - name: Install flannel service definition
   template: src={{ mode }}/flannel.service dest=/lib/systemd/system/flannel.service owner=root group=root mode=0644
+  register: result
+  notify:
+    - restart flannel
 
-- name: Enable and start flannel service
-  service: name=flannel enabled=true state=started
+- name: Reload systemd when service definition changed
+  command: systemctl daemon-reload
+  when: result|changed

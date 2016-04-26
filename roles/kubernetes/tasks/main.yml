@@ -24,6 +24,11 @@
 
 - name: Install kubelet service definition
   template: src=kubelet.service dest=/lib/systemd/system/kubelet.service owner=root group=root mode=0644
+  register: result
+  notify:
+    - restart kubelet
 
-- name: Enable and start kubelet service
-  service: name=kubelet enabled=true state=started
+- name: Reload systemd when service definition changed
+  command: systemctl daemon-reload
+  when: result|changed
+ 

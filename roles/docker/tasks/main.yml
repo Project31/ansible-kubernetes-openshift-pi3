@@ -1,5 +1,9 @@
 - name: Install own docker service
   template: src=docker.service dest=/lib/systemd/system/docker.service owner=root group=root mode=0644
+  register: result
+  notify:
+    - restart docker
 
-- name: Enable and restart docker service
-  service: name=docker enabled=true state=started
+- name: Reload systemd when service definition changed
+  command: systemctl daemon-reload
+  when: result|changed

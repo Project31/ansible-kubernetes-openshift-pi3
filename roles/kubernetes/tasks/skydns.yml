@@ -6,10 +6,13 @@
 
 - name: Copy configuration
   template: src=skydns-rc-svc.yml dest=/etc/kubernetes/skydns-rc-svc.yml
+  register: result
 
 - name: Remove previous controller & service (but ignore if failing)
   command: kubectl --namespace=kube-system delete rc,svc kube-dns
   ignore_errors: yes
+  when: result|changed
 
 - name: Install SkyDNS RC and Service
   command: kubectl create -f /etc/kubernetes/skydns-rc-svc.yml
+  when: result|changed

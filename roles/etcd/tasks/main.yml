@@ -14,6 +14,10 @@
 
 - name: Install etcd service definition
   template: src=etcd.service dest=/lib/systemd/system/etcd.service owner=root group=root mode=0644
+  register: result
+  notify:
+    - restart etcd
 
-- name: Enable and start etcd service
-  service: name=etcd enabled=true state=started
+- name: Reload systemd when service definition changed
+  command: systemctl daemon-reload
+  when: result|changed

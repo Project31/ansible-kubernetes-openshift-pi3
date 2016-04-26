@@ -1,4 +1,7 @@
 ---
+- name: Add and update packages
+  include: apt.yml
+
 - name: Add Swapfile
   include: swap.yml
   vars:
@@ -7,9 +10,6 @@
 
 - name: Setup system parameters (boot, hosts, timzone)
   include: system.yml
-
-- name: Add and update packages
-  include: apt.yml
 
 - name: Configure Wifi
   include: wifi.yaml

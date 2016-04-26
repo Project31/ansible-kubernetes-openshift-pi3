@@ -5,7 +5,7 @@
 ff02::1         ip6-allnodes
 ff02::2         ip6-allrouters
 
-{% for item in play_hosts %}
+{% for item in groups['pis'] %}
 {% if hostvars[item].ansible_default_ipv4.address %}
 {{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].name }}{% if hostvars[item].host_extra is defined %} {{ hostvars[item].host_extra }}{% endif %}
 

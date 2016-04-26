@@ -34,6 +34,4 @@
   hostname: name="{{ name }}"
 
 - name: Restart hostname
-  service: name=hostname state=restarted
-  async: 45
-  poll: 0
+  shell: "hostnamectl set-hostname {{ name }}"
