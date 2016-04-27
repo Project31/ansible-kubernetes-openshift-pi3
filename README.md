@@ -1,9 +1,10 @@
 ## Ansible Playbooks for Docker / Kubernetes / OpenShift on RaspberryPis 3
 
 
+<img src="docs/images/pi_cluster.jpg" align="right" style="float:right; margin: 50px 0px 20px 30px"/>
+
 These are the Ansible playbooks for a Raspberry Pi Cluster running Docker and Kubernetes as described in this [Blog Post](https://ro14nd.de/kubernetes-on-raspberry-pi3).
 
-<img src="docs/images/pi_cluster.jpg" style="float:right; margin: 50px 0px 20px 30px"/>
 
 The goals of thise project are
 * Using Ansible for not only a one-shot installation but also maintainance and upgrades.
