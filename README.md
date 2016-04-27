@@ -73,11 +73,11 @@ My setup is, that I span a private network `192.168.23.0/24` for the Pi cluster 
 
 The addresses I have chosen are :
 
-| IP |   |
-| -- | - |
-| `192.168.23.1` | WLAN Router |
-| `192.168.23.100` |  MacBook's WLAN |
-| `192.168.23.200` ... `192.168.23.203` | Raspberry Pis |
+| IP                                    | Device          |
+| ------------------------------------- | --------------- |
+| `192.168.23.1`                        | WLAN Router     |
+| `192.168.23.100`                      | MacBook's WLAN  |
+| `192.168.23.200` ... `192.168.23.203` | Raspberry Pis   |
 
 The MacBook is setup for NAT and forwarding from this private network to the internet. This [script](https://github.com/Project31/ansible-kubernetes-openshift-pi3/blob/master/tools/setup_nat_on_osx.sh) helps in setting up the forwarding and NAT rules on OS X.
 
