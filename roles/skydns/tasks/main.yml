@@ -13,6 +13,6 @@
   ignore_errors: yes
   when: result|changed
 
-- name: Install SkyDNS RC and Service
+- name: Install skydns
   command: kubectl create -f /etc/kubernetes/skydns-rc-svc.yml
   when: result|changed

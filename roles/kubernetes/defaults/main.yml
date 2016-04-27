@@ -8,13 +8,6 @@ version:
 images:
   hyperkube: gcr.io/google_containers/hyperkube-arm:v{{ version.kubernetes }}
   pause: gcr.io/google_containers/pause-arm:2.0
-  sky_dns: gcr.io/google_containers/skydns-arm:2015-12-13
-  exechealthz: gcr.io/google_containers/exechealthz-arm:1.1
-  kube2sky: gcr.io/google_containers/kube2sky-arm:1.11
-  etcd: gcr.io/google_containers/etcd-arm:2.2.1
-dns:
-  service_ip: 10.200.100.10
-  domain: cluster.local
 k8s:
   # Timing is good for demos. Defaults are 5min eviction and 40s node grace period
   pod_eviction_timeout: 5s
