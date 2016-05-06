@@ -35,3 +35,17 @@
 
 - name: Restart hostname
   shell: "hostnamectl set-hostname {{ name }}"
+
+- name: Check for ld-linux-armhf.so.3
+  stat: path=/lib/ld-linux-armhf.so.3
+  register: ld
+
+- name: Link ld-linux-armhf.so.3 --> ld-linux.so.3
+  file:
+    src: /lib/ld-linux-armhf.so.3
+    dest: /lib/ld-linux.so.3
+    state: link
+  when: ld.stat.exists
+
+- name: No DNS lookup with SSHD
+  lineinfile: dest=/etc/ssh/sshd_config line="UseDNS no" insertafter="EOF"
