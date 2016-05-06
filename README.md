@@ -1,10 +1,8 @@
-## Ansible Playbooks for Docker / Kubernetes / OpenShift on RaspberryPis 3
-
+## Ansible 2.0 Playbooks for Docker / Kubernetes / OpenShift on RaspberryPis 3
 
 <img src="docs/images/pi_cluster.jpg" align="right" style="float:right; margin: 50px 0px 20px 30px"/>
 
-These are the Ansible playbooks for a Raspberry Pi Cluster running Docker and Kubernetes as described in this [Blog Post](https://ro14nd.de/kubernetes-on-raspberry-pi3).
-
+Here are the Ansible playbooks for a Raspberry Pi Cluster running Docker and Kubernetes as described in this [Blog Post](https://ro14nd.de/kubernetes-on-raspberry-pi3). These playbooks require Ansible 2.0 and won't work with Ansible 1.x.
 
 The goals of thise project are
 * Using Ansible for not only a one-shot installation but also maintainance and upgrades.
@@ -105,7 +103,7 @@ After this initial setup is done, the next step is to initialize the base system
 
    There are three groups:
 
-   * **pis** contains all members of your cluster where one is marked as "master" in the field `host_extra`
+   * **pis** contains all members of your cluster where one is marked as "master" in the field `host_extra`. This group will be added to every node in its `/etc/hosts`. **It is important that one host is marked as "master", since the plabooks rely on this host alias or accessing the API server**.
    * **master** IP address of the Master
    * **nodes** All nodes which are not Master
 
