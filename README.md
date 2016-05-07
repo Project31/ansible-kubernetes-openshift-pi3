@@ -7,7 +7,7 @@ Here are the Ansible playbooks for a Raspberry Pi Cluster running Docker and Kub
 The goals of thise project are
 * Using Ansible for not only a one-shot installation but also maintainance and upgrades.
 * Using WiFi for connecting the cluster. See below for the reason.
-* Get [OpenShift Origin](https://github.com/openshift/origin) running and be able to switch between Ansible and OpenShift via Ansible.
+* Get [OpenShift Origin](https://github.com/openshift/origin) running and be able to switch between Kubernetes and OpenShift via Ansible.
 * Create a demonstration platform for my favourite development and integration platform [fabric8](http://fabric8.io).
 
 ## Shopping List
