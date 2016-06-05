@@ -13,3 +13,6 @@ k8s:
   pod_eviction_timeout: 5s
   node_monitor_grace_period: 10s
 debug_level: 2
+dns:
+  service_ip: 10.200.100.10
+  domain: cluster.local

@@ -1,3 +1,9 @@
+- name: Ensure that target directory /etc/docker exists
+  file: path=/etc/docker state=directory recurse=false
+
+- name: Add docker_init.sh for waiting on flannel to startup
+  template: src=docker_init.sh dest=/etc/docker/docker_init.sh mode=0755
+
 - name: Install own docker service
   template: src=docker.service dest=/lib/systemd/system/docker.service owner=root group=root mode=0644
   register: result

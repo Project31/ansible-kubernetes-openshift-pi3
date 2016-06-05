@@ -10,6 +10,7 @@ Type=notify
 EnvironmentFile=/var/lib/flannel/subnet.env
 ExecStartPre=-/sbin/ifconfig docker0 down
 ExecStartPre=-/sbin/brctl delbr docker0
+ExecStartPre=/etc/docker/docker_init.sh
 ExecStart=/usr/bin/docker daemon \
     --bip=${FLANNEL_SUBNET} \
     --mtu=${FLANNEL_MTU} \

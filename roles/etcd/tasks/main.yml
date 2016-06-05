@@ -1,4 +1,3 @@
-
 - name: Install etcd
   include: ../../includes/install_binaries.yml
   vars:

@@ -1,6 +1,7 @@
 [Unit]
 Description=Flannel Overlay Network for Kubernetes
 After=network.target etcd.service
+Before=docker.service
 Requires=etcd.service
 
 [Service]
