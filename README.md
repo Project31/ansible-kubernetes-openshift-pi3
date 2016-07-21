@@ -1,4 +1,4 @@
-## Ansible 2.0 Playbooks for Docker / Kubernetes / OpenShift on RaspberryPis 3
+## Ansible 2.0 Playbooks for Docker / Kubernetes / OpenShift on RaspberryPis 3 - Hypriot flavor
 
 <img src="docs/images/pi_cluster.jpg" align="right" style="float:right; margin: 50px 0px 20px 30px"/>
 
@@ -33,33 +33,31 @@ Some remarks:
 
 ## Initial Pi Setup
 
-Most of the installation is automated by using [Ansible](https://www.ansible.com/). However the initial setup is a bit more involved. It certainly can be improved (e.g. automatic filesystem expanding of the initial Raspian setup). If you have ideas how to improve this, please open issues and PRs on [Project31/ansible-kubernetes-openshift-pi3](https://github.com/Project31/ansible-kubernetes-openshift-pi3). Several base distributions has been tried out. It turned out that the most stable setup is based on a stock Raspian. Unfortunately it doesn't provide a headless WLAN setup as it is possible with the latest [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest) images, but for the moment it  much more stable (I had strange kernel panics and 200% CPU load issues with the Hypriot image for no obvious reasons). Since this is a one time effort, let's use Raspbian. If you want to try out the Hypriot image, there's an [experimental branch](https://github.com/Project31/ansible-kubernetes-openshift-pi3/tree/hypriot) for the Ansible playbooks which can be used with Hypriot. I will retry Hypriot OS for sure some times later.
+Most of the installation is automated by using [Ansible](https://www.ansible.com/).
+Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest) images a complete headless setup is possible., but for the moment it  much more stable (I had strange kernel panics and 200% CPU load issues with the Hypriot image for no obvious reasons).
 
-1. Download the latest Raspian image and store it as `raspbian.zip` :
+1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://downloads.raspberrypi.org/raspbian_lite_latest \
-             -o raspbian.zip
+        curl -L https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
+             -o hypriot.zip
 
 2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
-3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
+3. Prepare a config file `device-init.yml`:
+```yml
+hostname: n0
+wifi:
+  interfaces:
+    wlan0:
+      ssid: "bratwurst"
+      password: "secret"
+```
+   Of course set your proper ssid and password for the WLAN router. Also use different hostnames for each card.
+4. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
 
-        flash raspbian.zip
+        flash -c device-init.yml hypriot.zip
 
    You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
-4. Insert the Micro SSD card into your Raspberry Pi and connect it to a monitor and keyboard. Boot up. Login in with *pi* / *raspberry*. Then:
-
-        raspi-config --expand-rootfs
-        vi /etc/wpa_supplicant/wpa_supplicant.conf
-
-   and then add your WLAN credentials
-
-        network={
-           ssid="MySSID"
-           psk="s3cr3t"
-        }
-
-5. Reboot
-6. Repeat step 2. to 5. for each Micro SD card.
+6. Repeat step 2. to 4. for each Micro SD card. Please adapt the hostname before each round to **n1**, **n2**, **n3**.
 
 ## Network Setup
 
