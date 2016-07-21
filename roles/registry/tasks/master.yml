@@ -1,0 +1,15 @@
+- name: Ensure registry directory
+  file: path="/var/lib/registry" state=directory recurse=no
+
+- name: Copy configuration
+  template: src=registry-rc-svc.yml dest=/etc/kubernetes/registry-rc-svc.yml
+  register: result
+
+- name: Remove previous controller & service (but ignore if failing)
+  command: kubectl --namespace=kube-system delete rc,svc kube-registry
+  ignore_errors: yes
+  when: result|changed
+
+- name: Install registry rc and service
+  command: kubectl create -f /etc/kubernetes/registry-rc-svc.yml
+  when: result|changed

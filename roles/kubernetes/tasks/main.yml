@@ -12,6 +12,10 @@
 - name: Create Kubernetes config directory
   file: path=/etc/kubernetes/manifests/ state=directory recurse=no owner=root group=root mode=0755
 
+- name: Add certs
+  include: certs.yml
+  when: mode == "master"
+
 - name: Copy configuration
   template: src=kubernetes-{{ mode }}.yml dest=/etc/kubernetes/manifests/kubernetes.yaml
 

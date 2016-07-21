@@ -1,0 +1,21 @@
+- name: Create Kubernetes cert directory
+  file: path=/etc/kubernetes/certs/ state=directory recurse=no owner=root group=root mode=0755
+
+- name: Copy cert creation script
+  copy: src="make_ca_cert.sh" dest=/etc/kubernetes/certs/make_ca_cert.sh mode=0755 owner=root group=root
+
+- name: Check certs
+  stat: path=/etc/kubernetes/certs/ca.crt
+  register: ca
+
+- block:
+  - name: Extract master IP into variable master_ip
+    command: sh -c "grep master /etc/hosts | awk '{print $1}'"
+    register: master_from_hosts
+
+  - set_fact: master_ip={{ master_from_hosts.stdout }}
+
+  - name: Create certs
+    command: /etc/kubernetes/certs/make_ca_cert.sh {{ master_ip }} IP:{{ master_ip }},IP:10.0.0.1,DNS:kubernetes,DNS:kubernetes.default,DNS:kubernetes.default.svc,DNS:kubernetes.default.svc.cluster.local
+
+  when: not ca.stat.exists

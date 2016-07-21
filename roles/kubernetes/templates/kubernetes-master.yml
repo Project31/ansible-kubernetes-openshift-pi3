@@ -4,6 +4,10 @@ metadata:
   name: kube-master
 spec:
   hostNetwork: true
+  volumes:
+  - name: "certs-volume"
+    hostPath:
+      path: "/etc/kubernetes/certs"
   containers:
     - name: "kube-apiserver"
       image: "{{ images.hyperkube }}"
@@ -18,10 +22,15 @@ spec:
         - "--v={{ debug_level }}"
     - name: "kube-controller-manager"
       image: "{{ images.hyperkube }}"
+      volumeMounts:
+      - name: "certs-volume"
+        mountPath: "/etc/kubernetes/certs"
       args:
         - "/hyperkube"
         - "controller-manager"
         - "--master=http://127.0.0.1:8080"
+        - "--root-ca-file=/etc/kubernetes/certs/ca.crt"
+        - "--service-account-private-key-file=/etc/kubernetes/certs/server.key"
         - "--pod-eviction-timeout={{ k8s.pod_eviction_timeout }}"
         - "--node-monitor-grace-period={{ k8s.node_monitor_grace_period }}"
         - "--v={{ debug_level }}"

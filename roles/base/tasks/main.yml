@@ -12,7 +12,7 @@
   include: system.yml
 
 - name: Configure Wifi
-  include: wifi.yaml
+  include: wifi.yml
   when: wifi is defined
 
 - name: Setup user

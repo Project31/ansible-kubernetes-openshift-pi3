@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: traefik
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: traefik-secret
+  annotations:
+    kubernetes.io/service-account.name: traefik
+type: kubernetes.io/service-account-token
