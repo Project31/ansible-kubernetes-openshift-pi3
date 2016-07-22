@@ -1,7 +1,18 @@
 ---
-- name: Setup Raspberry Pi Base system
-
+- name: Install Python
   hosts: pis
+  gather_facts: no
+  remote_user: pirate
+  become: true
+  become_method: sudo
+
+  tasks:
+    - name: Install Python
+      raw: apt-get -y install python
+
+- name: Setup Raspberry Pi Base system
+  hosts: pis
+  gather_facts: yes
   remote_user: pirate
   become: true
   become_method: sudo

@@ -1,0 +1,9 @@
+hostname: ""
+wifi:
+  interfaces:
+    wlan0:
+      ssid: ""
+      password: ""
+clusterlab:
+  service:
+    run_on_boot: false
