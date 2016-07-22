@@ -4,6 +4,7 @@ Documentation=https://github.com/coreos/etcd
 After=network.target
 
 [Service]
+Environment=ETCD_UNSUPPORTED_ARCH=arm
 ExecStart=/usr/bin/etcd  \
   --data-dir=/var/lib/etcd \
   --advertise-client-urls=http://master:{{ etcd.port }} \
