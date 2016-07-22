@@ -22,3 +22,8 @@ The steps in details, shamelessly stolen from this [StackExchange answer](http:/
         sudo pfctl -f ./nat-rules -e #starts pfctl and loads the rules from the nat-rules file
 
 * Ensure in your WiFi Router that the nodes get the OS-X's IP 192.168.23.100 as router (either via DHCP or in the static routing)
+
+## Cleanup known_host
+
+Use `cleanup_known_hosts.sh` for removing all keys and readding the new host keys to `~/.ssh/known_hoss`
+ 
