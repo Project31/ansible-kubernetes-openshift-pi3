@@ -23,7 +23,7 @@
   template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
 
 - name: Install kubelet service definition
-  template: src=kubelet.service dest=/lib/systemd/system/kubelet.service owner=root group=root mode=0644
+  template: src=kubelet.service dest=/etc/systemd/system/kubelet.service owner=root group=root mode=0644
   register: result
   notify:
     - restart kubelet

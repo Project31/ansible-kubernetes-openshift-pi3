@@ -12,7 +12,7 @@
   file: path=/var/lib/etcd state=directory recurse=false
 
 - name: Install etcd service definition
-  template: src=etcd.service dest=/lib/systemd/system/etcd.service owner=root group=root mode=0644
+  template: src=etcd.service dest=/etc/systemd/system/etcd.service owner=root group=root mode=0644
   register: result
   notify:
     - restart etcd
