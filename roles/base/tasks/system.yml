@@ -1,8 +1,8 @@
 - name: Add cgroup for Memory limits to bootparams
   lineinfile:
     dest: /boot/cmdline.txt
-    regexp: '^(.*?)(\s*cgroup_enable.*swapaccount=\d+\s*)?$'
-    line: '\1 cgroup_enable=memory swapaccount=1'
+    regexp: '^(.*?)(\s*cgroup_enable=cpuset\s*)?$'
+    line: '\1 cgroup_enable=cpuset'
     backrefs: true
     state: present
 
