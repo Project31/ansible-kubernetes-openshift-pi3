@@ -5,7 +5,7 @@
   template: src=docker_init.sh dest=/etc/docker/docker_init.sh mode=0755
 
 - name: Install own docker service
-  template: src=docker.service dest=/lib/systemd/system/docker.service owner=root group=root mode=0644
+  template: src=docker.service dest=/etc/systemd/system/docker.service owner=root group=root mode=0644
   register: result
 
 - name: Reload systemd when service definition changed
