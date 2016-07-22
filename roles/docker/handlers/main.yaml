@@ -1,2 +1,5 @@
 - name: restart docker
   service: name=docker enabled=yes state=restarted
+
+- name: disable cluster-lab
+  service: name=cluster-lab enabled=false state=stopped
