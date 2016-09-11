@@ -2,7 +2,7 @@
 - name: SkyDNS addon
 
   hosts: master
-  remote_user: pi
+  remote_user: pirate
   become: true
 
   roles:

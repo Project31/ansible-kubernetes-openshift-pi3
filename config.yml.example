@@ -2,7 +2,7 @@
 # You timezone
 timezone: "Europe/Berlin"
 
-# User pi's password.
+# User pirate's password.
 # Need to be hashed as coming from 'mkpasswd'. Can be omitted, then the default password ('raspberry') is used
 # user:
 #  password: "<hashed password>"
