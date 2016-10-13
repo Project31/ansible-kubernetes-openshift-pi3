@@ -1,5 +1,6 @@
 - name: restart docker
   service: name=docker enabled=yes state=restarted
 
-- name: disable cluster-lab
-  service: name=cluster-lab enabled=false state=stopped
+# Not needed for hypriot-1.0.0 anymore
+# - name: disable cluster-lab
+#  service: name=cluster-lab enabled=false state=stopped
