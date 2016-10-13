@@ -4,6 +4,7 @@ network:
   service_subnet: 10.200.100.0/24
   pod_subnet: 10.1.0.0/16
 version:
+  # 1.4.1 does not work yet, user 1.3.2 instead
   kubernetes: 1.3.2
 images:
   hyperkube: gcr.io/google_containers/hyperkube-arm:v{{ version.kubernetes }}

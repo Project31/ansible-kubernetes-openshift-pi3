@@ -38,7 +38,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://downloads.hypriot.com/hypriotos-rpi-v0.8.0.img.zip
+        curl -L https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip
              -o hypriot.zip
 
 2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
@@ -56,7 +56,7 @@ clusterlab:
 ```
 4. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
 ```
-flash --hostname n0 --ssid "mysid" --password="secret" --clusterlab=false -c device-init.yml hypriot.zip
+flash --hostname n0 --ssid "mysid" --password "secret" --clusterlab false -c device-init.yml hypriot.zip
 ```
    You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
 6. Repeat step 2. to 4. for each Micro SD card. Please adapt the hostname before each round to **n1**, **n2**, **n3**.
@@ -83,7 +83,7 @@ In order to configure your WLAN router you need to connect to it according to it
 
 Startup all nodes, you should be able to ping every node in your cluster. I added `n0` ... `n3` to my notebook's `/etc/hosts` pointing to `192.168.23.200` ... `192.168.23.203` for convenience.
 
-You should be able to ssh into every Pi with user *pi* and password *raspberry*. Also, if you set up the forwarding on your desktop properly you should be able to ping from within the pi to the outside world.
+You should be able to ssh into every Pi with user *pirate* and password *hypriot*. Also, if you set up the forwarding on your desktop properly you should be able to ping from within the pi to the outside world. Internet access from the nodes is mandatory for setting up the nodes with Ansible
 
 ## Ansible Playbooks
 
@@ -123,7 +123,7 @@ In the next step the basic setup (without Kubernetes) is performed. This is done
 
     ansible-playbook -k -i hosts setup.yml
 
-When you are prompted for the password, use *raspberry*. You will probably also need to confirm the SSH authentity for each host with *yes*.
+When you are prompted for the password, use *hypriot*. You will probably also need to confirm the SSH authentity for each host with *yes*.
 
 The following steps will be applied by this command (which may take a bit):
 

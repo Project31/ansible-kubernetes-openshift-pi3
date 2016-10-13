@@ -24,7 +24,6 @@
     - hdparm
     - iperf
     - mtr-tiny
-    - docker-hypriot
     - bridge-utils
     - socat
     - jq
