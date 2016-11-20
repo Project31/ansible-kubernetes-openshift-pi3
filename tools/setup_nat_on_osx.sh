@@ -2,12 +2,12 @@
 
 if [[ "$#" -ne 2 ]]; then
   cat <<EOT
-Usage: setup_os_x.sh <external interface> <wifi interface>
+Usage: setup_os_x.sh <external interface> <internal interface>
 
 external-interface: The interface with which your Mac is
                     connected to the internet (e.g. "en0")
-wifi-interface:     The interface used by your WLAN adapter
-                    (e.g. "en5")
+internal-interface: The interface used to connect to your cluster
+                    (e.g. "en3")
 
 Check the interfaces with "ifconfig -a"
 EOT
