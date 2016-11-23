@@ -1,4 +1,5 @@
 hosts
+setup-host
 config.yml
 bin/
 *.tar.gz

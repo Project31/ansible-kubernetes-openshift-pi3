@@ -2,7 +2,7 @@
 - name: OpenShift Master
 
   hosts: master
-  remote_user: pi
+  remote_user: pirate
   become: true
 
   roles:
@@ -14,7 +14,7 @@
 - name: OpenShift Nodes
 
   hosts: nodes
-  remote_user: pi
+  remote_user: pirate
   become: true
 
   roles:

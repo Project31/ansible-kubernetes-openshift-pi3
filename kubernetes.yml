@@ -2,7 +2,7 @@
 - name: Kubernetes Master
 
   hosts: master
-  remote_user: pi
+  remote_user: pirate
   become: true
 
   vars:
@@ -21,7 +21,7 @@
 - name: Kubernetes Nodes
 
   hosts: nodes
-  remote_user: pi
+  remote_user: pirate
   become: true
 
   roles:
