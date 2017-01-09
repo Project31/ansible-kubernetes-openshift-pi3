@@ -5,16 +5,7 @@
   remote_user: pi
   become: true
 
-  vars:
-    dns:
-      service_ip: 10.200.100.10
-      domain: cluster.local
-
   roles:
-  - etcd
-  - role: flannel
-    mode: master
-  - docker
   - role: kubernetes
     mode: master
 
@@ -25,8 +16,5 @@
   become: true
 
   roles:
-  - role: flannel
-    mode: node
-  - docker
   - role: kubernetes
     mode: node

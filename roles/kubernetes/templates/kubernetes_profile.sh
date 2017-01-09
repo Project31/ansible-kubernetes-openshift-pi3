@@ -1,4 +1,5 @@
 # Shortcut
 alias k=kubectl
 
-export KUBERNETES_MASTER=http://master:8080
+source <(kubectl completion bash)
+# complete -o default -F __start_kubectl k

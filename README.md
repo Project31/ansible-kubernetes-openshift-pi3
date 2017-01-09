@@ -38,28 +38,17 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://downloads.hypriot.com/hypriotos-rpi-v1.0.0.img.zip
+        curl -L https://downloads.hypriot.com/hypriotos-rpi-v1.1.3.img.zip
              -o hypriot.zip
 
 2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
-3. Prepare a config file `device-init.yml`:
-```yml
-hostname: ""
-wifi:
-  interfaces:
-    wlan0:
-      ssid: ""
-      password: ""
-clusterlab:
-  service:
-    run_on_boot: false
+
+3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
 ```
-4. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
-```
-flash --hostname n0 --ssid "mysid" --password "secret" --clusterlab false -c device-init.yml hypriot.zip
+flash --hostname n0 --ssid "mysid" --password "secret" --clusterlab false hypriot.zip
 ```
    You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
-6. Repeat step 2. to 4. for each Micro SD card. Please adapt the hostname before each round to **n1**, **n2**, **n3**.
+4. Repeat step 2. to 3. for each Micro SD card. Please adapt the hostname before each round to **n1**, **n2**, **n3**.
 
 ## Network Setup
 

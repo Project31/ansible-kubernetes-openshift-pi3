@@ -1,0 +1,21 @@
+- name: Add Kubernetes Repo Key
+  apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: Add Kubernetes Repo
+  apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial main' state=present
+
+- name: Update APT package cache
+  apt:
+    update_cache: yes
+    upgrade: safe
+
+- name: Install Packages
+  apt:
+    name: "{{ item }}"
+    force: yes
+    state: present
+  with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - kubernetes-cni

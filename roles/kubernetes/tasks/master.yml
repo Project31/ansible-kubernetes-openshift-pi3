@@ -1,0 +1,20 @@
+- name: Run kubeadm init on master
+  command: kubeadm init --token {{ k8s_token }} --service-cidr {{ network.service_subnet }} --pod-network-cidr={{ network.pod_subnet }}
+  register: kubeadm_init
+
+# - debug: var=kubeadm_init.stdout
+
+- name: Copy flannel installation
+  template: src=kube-flannel.yml dest=/etc/kubernetes/kube-flannel.yml
+
+- name: Create flannel resources
+  command: kubectl create -f /etc/kubernetes/kube-flannel.yml
+
+- name: Download cluster configuration
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: "{{ playbook_dir }}/"
+    flat: true
+
+- name: Rename cluster configuration
+  local_action: command mv {{ playbook_dir }}/admin.conf {{ playbook_dir }}/k8s-pi-cluster.cfg
