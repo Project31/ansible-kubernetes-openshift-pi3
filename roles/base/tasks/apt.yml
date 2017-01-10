@@ -10,6 +10,12 @@
 - name: Add Hypriot Repo
   apt_repository: repo='deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main' state=present
 
+- name: Add Kubernetes Repo Key
+  apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+- name: Add Kubernetes Repo
+  apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial main' state=present
+
 - name: Update APT package cache
   apt:
     update_cache: yes

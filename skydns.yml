@@ -1,9 +1,0 @@
----
-- name: SkyDNS addon
-
-  hosts: master
-  remote_user: pi
-  become: true
-
-  roles:
-  - skydns

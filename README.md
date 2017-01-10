@@ -45,7 +45,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
 ```
-flash --hostname n0 --ssid "mysid" --password "secret" --clusterlab false hypriot.zip
+flash --hostname n0 --ssid "mysid" --password "secret" hypriot.zip
 ```
    You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
 4. Repeat step 2. to 3. for each Micro SD card. Please adapt the hostname before each round to **n1**, **n2**, **n3**.
@@ -96,17 +96,14 @@ After this initial setup is done, the next step is to initialize the base system
    * **master** IP address of the Master
    * **nodes** All nodes which are not Master
 
-3. Copy over the configuration and adapt it.
+3. If required, copy over the configuration and adapt it:
 
         cp config.yml.example config.yml
         vi config.yml
 
-   You should at least put in your WLAN credentials, but you are also free to adapt the other values.
-
-
 ### Basic Node Setup
 
-If you have already created a cluster with these playbooks and want to start a fresh, please be sure that you cleanup your `~/.ssh/known_hosts` from the old host keys. You should be able to ssh into each of the nodes without warnings. Also you must be able to reach the internet from the nodes.
+If you have already created a cluster with these playbooks and want to start a fresh, please be sure that you cleanup your `~/.ssh/known_hosts` from the old host keys. The script `tools/cleanup_known_hosts.sh` can be used for this. You should be able to ssh into each of the nodes without warnings. Also you must be able to reach the internet from the nodes.
 
 In the next step the basic setup (without Kubernetes) is performed. This is done by
 
@@ -117,7 +114,7 @@ When you are prompted for the password, use *hypriot*. You will probably also ne
 The following steps will be applied by this command (which may take a bit):
 
 * Docker will be installed from the Hypriot repositories
-* Your public SSH key is copied over to *pi's* authenticated_keys and the users password will be taken from `config.yml`
+* Your public SSH key `.ssh/id_rsa.pub` is copied over to *pi's* authenticated_keys and the users password will be taken from `config.yml`
 * Some extra tools are installed for your convenience and some benchmarking:
   - hdparm
   - iperf
@@ -135,25 +132,43 @@ The final step for a working Kubernetes cluster is to run
 
     ansible-playbook -i hosts kubernetes.yml
 
-This will install one master at n0 and threed additional nodes n1, n2, n3.
+This will install one master at n0 and threed additional nodes n1, n2, n3 with the help of [kubeadm](http://kubernetes.io/docs/getting-started-guides/kubeadm/)
 
-The following features are enabled:
+In addition this playbook does the following:
 
-* `etcd`, `flanneld` and `kubelet` as a systemd service on the master
-* `kubelet` and `flanneld` as systemd service on the nodes
-* Configure Docker to use the Flannel overlay network
-* Install kubectl (and alias `k`)
+* Creates a token in `run/kubeadm-token.txt` if not done already and use it for installing master and nodes
+* Installs kubectl and an alias `k`
+* Creates a `run/pi-cluster.cfg` which can be used for `kubectl` on the local host to access the pi cluster's master. Either use `kubectl --kubeconfig run/pi-cluster.cfg` or set the environment variable `export KUBECONFIG=$(pwd)/run/pi-cluster.cfg`
 
-If there are some issues when restarting services in the master, don't worry. However you should best restart the master node n0 when this happens, because when setting up the other nodes the would fail if not all services are running on the master.
+The initial installation may take a bit until all infrastructure docker images has been pulled from the registry. Eventually you should be able to use `kubectl get nodes` from e.g. `n0` or from the localhost (if you set the config as described above).
 
-After an initial installation it may take a bit until all infrastructure docker images has been loaded. Eventually should be able to use `kubectl get nodes` from e.g. `n0`. When this wotks but you see only one node, please reboot the cluster since some services may have not been started on the nodes (plug the cables when `n0` is ready).
+### Full Kubernetes reset
 
-### Install SkyDNS
+In case you need a [full cleanup](http://stackoverflow.com/a/41372829/207604) of the Kubernetes setup, use:
 
-For service discovery via DNS you should finally install the SkyDNS addon, but only when the cluster is running, i.e. the master must be up and listening. For this final step call:
+    ansible-playbook -i hosts kubernetes-full-reset.yml
 
-    ansible-playbook -i hosts skydns.yml
+This is also needed in case you want to change one of the Pod or Services subnets.
 
-## Wrap Up
+### Tools
 
-The initial setup might be still be a bit flaky, so consider this project please *work-in-progress* I'd love to hear your feedback on this, and maybe we get it even more stable. Note, that's my first Ansible playbook :).
+In the `tools/` directory you find some useful scripts:
+
+* `cleanup_known_hosts.sh` for removing the entries for n0, n1, n2 and n3 in `~/.ssh/known_hosts` in case you want to completely restall the cluster
+* `setup_nat_on_osx.sh` switches on NAT so that the cluster can reach the Internet for loading the required images. Call it without arguments for usage informations
+* `setup_nat_off_osx.sh` switches off NAT again.
+* `halt_pis.sh` stop the cluster (needs still a bit of tuning)
+* `reboot_pis.sh` reboot the cluster (needs still a bit of tuning)
+
+### Next steps ...
+
+For the future we plan the following features to add:
+
+* Volume support
+* Registry
+* Ingress Controller based on traefik
+* OpenShift support
+
+### Acknowledgements
+
+Thanks to Sergio Sisternes for the inspiration to switch to `kubeadm` which makes things much easier and the manual setup of `etcd` and `flanneld` superfluous.

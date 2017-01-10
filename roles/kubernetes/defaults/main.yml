@@ -1,14 +1,12 @@
 reset: false
 network:
   service_subnet: 10.200.100.0/24
-  pod_subnet: 10.244.0.0/16
+  pod_subnet: 10.1.0.0/16
 images:
   flannel: quay.io/coreos/flannel-git:v0.6.1-28-g5dde68d-arm
 k8s:
   # Timing is good for demos. Defaults are 5min eviction and 40s node grace period
+  # TODO: Not yet put into the k8s configuration
   pod_eviction_timeout: 5s
   node_monitor_grace_period: 10s
 debug_level: 2
-dns:
-  service_ip: 10.200.100.10
-  domain: cluster.local

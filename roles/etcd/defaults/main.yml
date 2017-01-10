@@ -1,5 +1,0 @@
-etcd:
-  port: 2379
-  peer_port: 2380
-version:
-  etcd: 2.3.7 

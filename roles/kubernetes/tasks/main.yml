@@ -1,7 +1,6 @@
 ---
 - name: Add and update packages
   include: apt.yml
-  when: false
 
 - name: Update Docker
   include: docker.yml
@@ -13,22 +12,22 @@
   template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
 
 - name: Check for an already generated token
-  local_action: stat path={{ playbook_dir }}/k8s-token.txt
-  register: k8s_token
+  local_action: stat path={{ playbook_dir }}/run/kubeadm-token.txt
+  register: kubeadm_token
 
 - block:
   - name: Create a token from master
     command: kubeadm token generate
-    register: kubeadm_token
+    register: kubeadm_gen_token
 
   - name: Copy token to local file 'kubernetes-token'
-    local_action: copy content={{ kubeadm_token.stdout }} dest={{ playbook_dir}}/k8s-token.txt
+    local_action: copy content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
 
-  when: k8s_token.stat.exists == false
+  when: kubeadm_token.stat.exists == false
 
 - name: Register token as fact
   set_fact:
-    k8s_token: "{{ lookup('file', playbook_dir + '/k8s-token.txt') }}"
+    kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
 
 - name: Check for a running cluster
   command: kubectl get nodes
@@ -50,7 +49,7 @@
       when: mode == "master"
 
     - name: Run kubeadm join on node
-      command: kubeadm join --token {{ k8s_token }} master
+      command: kubeadm join --token {{ kubeadm_token }} master
       when: mode == "node"
 
     - name: Copy kube login config to ~/.kube/config

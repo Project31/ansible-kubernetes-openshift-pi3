@@ -1,2 +1,0 @@
-- name: restart etcd
-  service: name=etcd enabled=yes state=restarted
