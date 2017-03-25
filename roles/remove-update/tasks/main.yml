@@ -1,0 +1,21 @@
+- name: kubeadm reset
+  command: kubeadm reset
+
+- name: Reset data in etcd
+  command: etcdctl rm --recursive registry
+  when: mode == "master"
+
+- name: Remove /var/lib/cni
+  command: rm -rf /var/lib/cni
+
+- name: Remove /run/flannel
+  command: rm -rf /run/flannel
+
+- name: Remove /etc/cni
+  command: rm -rf /etc/cni
+
+- name: Bring down cni0
+  comand: ifconfig cni0 down
+
+- name: Delete cni0
+  command: brctl delbr cni0

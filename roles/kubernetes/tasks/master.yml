@@ -1,5 +1,9 @@
+- name: Copy init file for kubeadm
+  copy: src=kubeadm.yml dest=/etc/kuberentes/kubeadm.yml mode=0755
+
 - name: Run kubeadm init on master
-  command: kubeadm init --token {{ kubeadm_token }} --service-cidr {{ network.service_subnet }} --pod-network-cidr={{ network.pod_subnet }}
+  # --skip-preflight-checks until the new Docker SE version numbers are supported
+  command: kubeadm init --token {{ kubeadm_token }} --service-cidr {{ network.service_subnet }} --pod-network-cidr={{ network.pod_subnet }} --skip-preflight-checks
   register: kubeadm_init
 
 # - debug: var=kubeadm_init.stdout

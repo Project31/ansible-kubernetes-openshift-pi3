@@ -2,6 +2,7 @@
   lineinfile:
     dest: /etc/systemd/system/docker.service.d/overlay.conf
     regexp: '^(ExecStart.*dockerd.*?)(\s*-H tcp://.*:2375\s*)?$'
+    # Disable iptables for Docker 1.13
     line: '\1 -H tcp://{{ inventory_hostname }}:2375'
     backrefs: true
     state: present

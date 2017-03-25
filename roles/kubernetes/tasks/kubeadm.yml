@@ -1,0 +1,47 @@
+- name: Check for an already generated token
+  local_action: stat path={{ playbook_dir }}/run/kubeadm-token.txt
+  register: kubeadm_token
+
+- block:
+  - name: Create a token from master
+    command: kubeadm token generate
+    register: kubeadm_gen_token
+
+  - name: Copy token to local file 'kubernetes-token'
+    local_action: copy content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
+
+  when: kubeadm_token.stat.exists == false
+
+- name: Register token as fact
+  set_fact:
+    kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
+
+- name: Check for a running cluster
+  command: kubectl get nodes
+  become_user: pi
+  register: kubectl_result
+  failed_when: kubectl_result.rc == 2
+
+- set_fact: init_required={{ kubectl_result.rc == 1 or reset }}
+
+- name: Reset if requested
+  command: kubeadm reset
+  when: reset
+  tags:
+    - reset
+
+- block:
+    - name: Setup master
+      include: master.yml
+      when: mode == "master"
+
+    - name: Run kubeadm join on node
+      # --skip-preflight-checks until the new Docker SE version numbers are supported
+      command: kubeadm join --token={{ kubeadm_token }} --skip-preflight-checks master
+      when: mode == "node"
+
+    - name: Copy Kubernetes access config to ~/.kube/config on nodes
+      copy: remote_src=True src=/etc/kubernetes/kubelet.conf dest=/home/pi/.kube/config owner=pi
+      when: mode == "node"
+
+  when: init_required == true

@@ -21,6 +21,11 @@
     update_cache: yes
     upgrade: safe
 
+- name: Pin Docker to version 1.12 (latest supported by kubernetes)
+  apt:
+    name: docker=1.12
+    state: present
+    
 - name: Install Packages
   apt:
     name: "{{ item }}"
