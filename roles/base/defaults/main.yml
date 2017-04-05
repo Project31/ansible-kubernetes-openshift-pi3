@@ -1,3 +1,5 @@
 ssh:
   pub_key_path: "~/.ssh/id_rsa.pub"
+version:
+  docker_engine: "1.12*"
 timezone: "Etc/UTC"

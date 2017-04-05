@@ -1,0 +1,13 @@
+- name: Create flannel resources
+  template: src=cni/flannel.yml dest=/etc/kubernetes/kube-flannel.yml
+
+- name: Create flannel resources
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  command: kubectl create -f /etc/kubernetes/kube-flannel.yml
+
+- name: Download cluster configuration
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: "{{ playbook_dir }}/run/"
+    flat: true

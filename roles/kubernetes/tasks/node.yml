@@ -1,0 +1,5 @@
+- name: Run kubeadm join on node
+  command: kubeadm join --token={{ kubeadm_token }} master:6443
+
+- name: Copy Kubernetes access config to ~/.kube/config on nodes
+  copy: remote_src=True src=/etc/kubernetes/kubelet.conf dest=/home/pi/.kube/config owner=pi

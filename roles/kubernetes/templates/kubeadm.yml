@@ -1,0 +1,18 @@
+kind: MasterConfiguration
+apiVersion: kubeadm.k8s.io/v1alpha1
+token: "{{ kubeadm_token }}"
+networking:
+  podSubnet: "{{ network.pod_subnet }}"
+#  serviceSubnet: "{{ network.service_subnet }}"
+controllerManagerExtraArgs:
+  controllers: "*,-persistentvolume-binder,bootstrapsigner,tokencleaner"
+  horizontal-pod-autoscaler-use-rest-clients: "true"
+  horizontal-pod-autoscaler-sync-period: "10s"
+  node-monitor-grace-period: "10s"
+apiServerExtraArgs:
+  runtime-config: "api/all=true"
+  feature-gates: "TaintBasedEvictions=true"
+# Disabled for now, requires 1.7.0 alpha:
+#  proxy-client-cert-file: "/etc/kubernetes/pki/front-proxy-client.crt"
+#  proxy-client-key-file: "/etc/kubernetes/pki/front-proxy-client.key"
+# selfHosted: true

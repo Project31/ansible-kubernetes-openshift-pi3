@@ -1,18 +1,17 @@
 - name: Copy init file for kubeadm
-  copy: src=kubeadm.yml dest=/etc/kuberentes/kubeadm.yml mode=0755
+  template: src=kubeadm.yml dest=/etc/kubernetes/kubeadm.yml mode=0755
 
 - name: Run kubeadm init on master
-  # --skip-preflight-checks until the new Docker SE version numbers are supported
-  command: kubeadm init --token {{ kubeadm_token }} --service-cidr {{ network.service_subnet }} --pod-network-cidr={{ network.pod_subnet }} --skip-preflight-checks
+#  environment:
+    # Temporary until 1.6 is released
+#    KUBE_HYPERKUBE_IMAGE: luxas/hyperkube:v1.6.0-and-PR-42911
+  command: kubeadm init --config /etc/kubernetes/kubeadm.yml
   register: kubeadm_init
 
+- name: Copy Kubernetes access config to ~/.kube/config on nodes
+  copy: remote_src=True src=/etc/kubernetes/admin.conf dest=/home/pi/.kube/config owner=pi
+
 # - debug: var=kubeadm_init.stdout
-
-- name: Copy flannel installation
-  template: src=kube-flannel.yml dest=/etc/kubernetes/kube-flannel.yml
-
-- name: Create flannel resources
-  command: kubectl create -f /etc/kubernetes/kube-flannel.yml
 
 - name: Download cluster configuration
   fetch:
@@ -22,3 +21,6 @@
 
 - name: Rename cluster configuration
   local_action: command mv {{ playbook_dir }}/run/admin.conf {{ playbook_dir }}/run/pi-cluster.cfg
+
+- name: Install CNI plugin for {{ overlay_network }}
+  include: cni/{{ overlay_network }}.yml

@@ -38,12 +38,6 @@
 - name: Add DHCP hook to copy etc hosts
   copy: src=copy_hosts dest=/etc/dhcp/dhclient-enter-hooks.d/ mode=0755
 
-- name: Set hostname
-  hostname: name="{{ name }}"
-
-- name: Restart hostname
-  shell: "hostnamectl set-hostname {{ name }}"
-
 - name: Check for ld-linux-armhf.so.3
   stat: path=/lib/ld-linux-armhf.so.3
   register: ld
@@ -54,6 +48,9 @@
     dest: /lib/ld-linux.so.3
     state: link
   when: ld.stat.exists
+
+- name: Set hostname
+  hostname: name="{{ name }}"
 
   # Needed only for hypriot
 - stat: path=/boot/device-init.yaml

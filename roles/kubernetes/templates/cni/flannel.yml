@@ -1,4 +1,10 @@
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: flannel
+  namespace: kube-system
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -42,6 +48,10 @@ spec:
       hostNetwork: true
       nodeSelector:
         beta.kubernetes.io/arch: arm
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      serviceAccountName: flannel
       containers:
       - name: kube-flannel
         image: {{ images.flannel }}

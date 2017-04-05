@@ -6,10 +6,8 @@
   - name: Create a token from master
     command: kubeadm token generate
     register: kubeadm_gen_token
-
   - name: Copy token to local file 'kubernetes-token'
     local_action: copy content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
-
   when: kubeadm_token.stat.exists == false
 
 - name: Register token as fact
@@ -21,6 +19,7 @@
   become_user: pi
   register: kubectl_result
   failed_when: kubectl_result.rc == 2
+  changed_when: kubectl_result.rc == 1
 
 - set_fact: init_required={{ kubectl_result.rc == 1 or reset }}
 
@@ -35,13 +34,8 @@
       include: master.yml
       when: mode == "master"
 
-    - name: Run kubeadm join on node
-      # --skip-preflight-checks until the new Docker SE version numbers are supported
-      command: kubeadm join --token={{ kubeadm_token }} --skip-preflight-checks master
-      when: mode == "node"
-
-    - name: Copy Kubernetes access config to ~/.kube/config on nodes
-      copy: remote_src=True src=/etc/kubernetes/kubelet.conf dest=/home/pi/.kube/config owner=pi
+    - name: Setup node
+      include: node.yml
       when: mode == "node"
 
   when: init_required == true

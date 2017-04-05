@@ -8,9 +8,3 @@
     - kubeadm
     - kubectl
     - kubernetes-cni
-
-- name: Downgrade Docker to 1.12
-  apt:
-    name: docker=1.12
-    force: yes
-    state: present

@@ -1,0 +1,3 @@
+Package: docker-engine
+Pin: version {{ version.docker_engine }}
+Pin-Priority: 10000

@@ -22,11 +22,11 @@
   command: brctl delbr cni0
   ignore_errors: true
 
-- name: Update APT package cache and upgrade
-  apt:
-    update_cache: yes
-    upgrade: safe
-    state: latest
+#- name: Update APT package cache and upgrade
+#  apt:
+#    update_cache: yes
+#    upgrade: safe
+#    state: latest
 
 - name: Reboot
   shell: sleep 2 && reboot

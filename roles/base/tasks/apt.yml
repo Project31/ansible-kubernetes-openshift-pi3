@@ -13,19 +13,30 @@
 - name: Add Kubernetes Repo Key
   apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
+- name: Temp
+  # Try to pick up 1.6 builds. Switch over to '-unstable' if targeting latest releases
+  apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial-stable main' state=absent
+u
 - name: Add Kubernetes Repo
+  # Try to pick up 1.6 builds. Switch over to '-unstable' if targeting latest releases
   apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial main' state=present
 
-- name: Update APT package cache
+- name: Pin Docker to a version {{ version.docker_version }} (the latest supported by Kubernetes)
+  template: src=docker-apt-pin.txt dest=/etc/apt/preferences.d/docker
+
+- name: Update APT package cache and upgrade
   apt:
     update_cache: yes
-    upgrade: safe
+    autoremove: yes
+    upgrade: yes
 
-- name: Pin Docker to version 1.12 (latest supported by kubernetes)
+- name: Downgrade docker
   apt:
-    name: docker=1.12
     state: present
-    
+    name: docker-engine={{ version.docker_engine }}
+    autoremove: yes
+    force: yes
+
 - name: Install Packages
   apt:
     name: "{{ item }}"
