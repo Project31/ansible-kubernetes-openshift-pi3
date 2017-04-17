@@ -167,7 +167,7 @@ This is also needed in case you want to change one of the Pod or Services subnet
 
 In the `tools/` directory you find some useful scripts:
 
-* `cleanup_known_hosts.sh` for removing the entries for n0, n1, n2 and n3 in `~/.ssh/known_hosts` in case you want to completely restall the cluster
+* `cleanup_known_hosts.sh` for removing the entries for n0, n1, n2 and n3 in `~/.ssh/known_hosts` in case you want to completely reinstall the cluster
 * `setup_nat_on_osx.sh` switches on NAT so that the cluster can reach the Internet for loading the required images. Call it without arguments for usage informations
 * `setup_nat_off_osx.sh` switches off NAT again.
 * `halt_pis.sh` stop the cluster (needs still a bit of tuning)
