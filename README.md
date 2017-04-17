@@ -1,4 +1,4 @@
-## Ansible 2.0 Playbooks for Docker / Kubernetes / OpenShift on RaspberryPis 3 - Hypriot flavor
+## Ansible 2 Playbooks for Docker / Kubernetes / OpenShift on RaspberryPis 3 - Hypriot flavor
 
 <img src="docs/images/pi_cluster.jpg" align="right" style="float:right; margin: 50px 0px 20px 30px"/>
 
