@@ -16,7 +16,7 @@
 - name: Temp
   # Try to pick up 1.6 builds. Switch over to '-unstable' if targeting latest releases
   apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial-stable main' state=absent
-u
+
 - name: Add Kubernetes Repo
   # Try to pick up 1.6 builds. Switch over to '-unstable' if targeting latest releases
   apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial main' state=present
