@@ -16,7 +16,7 @@
 
 - name: Check for a running cluster
   command: kubectl get nodes
-  become_user: pi
+  become_user: pirate
   register: kubectl_result
   failed_when: kubectl_result.rc == 2
   changed_when: kubectl_result.rc == 1
