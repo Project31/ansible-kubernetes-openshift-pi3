@@ -18,6 +18,5 @@
   become_method: sudo
   vars_files:
     - config.yml
-
   roles:
     - base
