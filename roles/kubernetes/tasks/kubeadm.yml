@@ -1,6 +1,7 @@
 - name: Check for an already generated token
-  sudo: false
-  local_action: stat path={{ playbook_dir }}/run/kubeadm-token.txt
+  become: no
+  stat: path={{ playbook_dir }}/run/kubeadm-token.txt
+  delegate_to: localhost
   register: kubeadm_token
 
 - block:
@@ -8,8 +9,9 @@
     command: kubeadm token generate
     register: kubeadm_gen_token
   - name: Copy token to local file 'kubernetes-token'
-    sudo: false
-    local_action: copy content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
+    become: no
+    copy: content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
+    delegate_to: localhost
   when: kubeadm_token.stat.exists == false
 
 - name: Register token as fact

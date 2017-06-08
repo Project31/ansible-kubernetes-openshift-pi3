@@ -20,8 +20,9 @@
     flat: true
 
 - name: Rename cluster configuration
-  sudo: false
-  local_action: command mv {{ playbook_dir }}/run/admin.conf {{ playbook_dir }}/run/pi-cluster.cfg
+  become: no
+  command: mv {{ playbook_dir }}/run/admin.conf {{ playbook_dir }}/run/pi-cluster.cfg
+  delegate_to: localhost
 
 - name: Install CNI plugin for {{ overlay_network }}
   include: cni/{{ overlay_network }}.yml
