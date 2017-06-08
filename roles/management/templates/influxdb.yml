@@ -1,0 +1,66 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: monitoring-influxdb
+  labels:
+    task: monitoring
+    k8s-app: influxdb
+  namespace: kube-system
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        task: monitoring
+        k8s-app: influxdb
+    spec:
+      tolerations:
+      - key: beta.kubernetes.io/arch
+        value: arm
+        effect: NoSchedule
+      - key: beta.kubernetes.io/arch
+        value: arm64
+        effect: NoSchedule
+      containers:
+      - name: influxdb
+        image: {{ images.influxdb }}
+        volumeMounts:
+        - mountPath: /data
+          name: influxdb-storage
+      volumes:
+      - name: influxdb-storage
+        persistentVolumeClaim:
+          claimName: influxdb-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: influxdb
+    task: monitoring
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: monitoring-influxdb
+  name: monitoring-influxdb
+  namespace: kube-system
+spec:
+  ports:
+  - port: 8086
+    targetPort: 8086
+  selector:
+    k8s-app: influxdb
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: influxdb-pv-claim
+  namespace: kube-system
+  labels:
+    k8s-app: influxdb
+    task: monitoring
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

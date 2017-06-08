@@ -1,0 +1,5 @@
+- name: Install Dashboard + Heapster
+  include: includes/install_k8s_resource.yml name="{{ item }}"
+  with_items:
+      - dashboard
+      - heapster

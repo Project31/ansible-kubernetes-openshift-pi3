@@ -20,7 +20,15 @@
     flat: true
 
 - name: Rename cluster configuration
+  sudo: false
   local_action: command mv {{ playbook_dir }}/run/admin.conf {{ playbook_dir }}/run/pi-cluster.cfg
 
 - name: Install CNI plugin for {{ overlay_network }}
   include: cni/{{ overlay_network }}.yml
+
+- name: Download cluster configuration
+  fetch:
+    src: "/etc/kubernetes/admin.conf"
+    dest: "{{ playbook_dir }}/run/"
+    flat: true
+  

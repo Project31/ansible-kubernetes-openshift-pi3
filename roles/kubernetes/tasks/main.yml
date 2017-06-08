@@ -8,6 +8,9 @@
 - name: Create dir ~/.kube
   file: path=/home/pi/.kube state=directory owner=pi group=users mode=0775
 
+- name: Create dir /etc/kubernetes/apps
+  file: path=/etc/kubernetes/apps state=directory mode=0775
+
 - name: Setup profile
   template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
 

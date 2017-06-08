@@ -1,0 +1,9 @@
+---
+- name: Management Apps (dashboard, heapster, influxdb)
+
+  hosts: master
+  remote_user: pi
+  become: true
+
+  roles:
+  - role: management
