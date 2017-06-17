@@ -2,6 +2,9 @@
 - name: Add and update packages
   include: apt.yml
 
+- name: Create dir /var/gluster-fs
+  file: path=/var/gluster-fs state=directory mode=0775
+
 - name: Update Docker
   include: docker.yml
 
