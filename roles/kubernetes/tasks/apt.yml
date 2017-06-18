@@ -8,3 +8,4 @@
     - kubeadm
     - kubectl
     - kubernetes-cni
+    - glusterfs-server
