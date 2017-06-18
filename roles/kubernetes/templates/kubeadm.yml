@@ -5,7 +5,7 @@ networking:
   podSubnet: "{{ network.pod_subnet }}"
 #  serviceSubnet: "{{ network.service_subnet }}"
 controllerManagerExtraArgs:
-  controllers: "*,-persistentvolume-binder,bootstrapsigner,tokencleaner"
+  controllers: "*,bootstrapsigner,tokencleaner"
   horizontal-pod-autoscaler-use-rest-clients: "true"
   horizontal-pod-autoscaler-sync-period: "20s"
   node-monitor-grace-period: "40s"
