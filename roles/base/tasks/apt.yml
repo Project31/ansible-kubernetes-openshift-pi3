@@ -37,6 +37,12 @@
     autoremove: yes
     force: yes
 
+- name: Set overlay driver for docker
+  lineinfile:
+    dest: /lib/systemd/system/docker.service
+    regexp: '^ExecStart='
+    line: 'ExecStart=/usr/bin/dockerd -H fd:// -s overlay2'
+
 - name: Install Packages
   apt:
     name: "{{ item }}"
