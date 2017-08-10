@@ -41,7 +41,7 @@
   lineinfile:
     dest: /lib/systemd/system/docker.service
     regexp: '^ExecStart='
-    line: 'ExecStart=/usr/bin/dockerd -H fd:// -s overlay2'
+    line: 'ExecStart=/usr/bin/dockerd -H fd:// -s overlay'
 
 - name: Install Packages
   apt:
