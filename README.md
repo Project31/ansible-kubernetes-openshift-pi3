@@ -34,7 +34,7 @@ Some remarks:
 ## Initial Pi Setup
 
 Most of the installation is automated by using [Ansible](https://www.ansible.com/).
-Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest) images a complete headless setup is possible., but for the moment it  much more stable (I had strange kernel panics and 200% CPU load issues with the Hypriot image for no obvious reasons).
+Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest) images a complete headless setup is possible.
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
