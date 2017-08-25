@@ -172,6 +172,7 @@ In the `tools/` directory you find some useful scripts:
 * `setup_nat_off_osx.sh` switches off NAT again.
 * `halt_pis.sh` stop the cluster (needs still a bit of tuning)
 * `reboot_pis.sh` reboot the cluster (needs still a bit of tuning)
+* `init_machine_id.sh` initialize the `/etc/machine-id` to a random value on every host
 
 ### Next steps ...
 
