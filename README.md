@@ -106,13 +106,13 @@ Because of a pecularity of Hypriot OS 1.4 which causes every machine id to be th
 `/etc/machine-id` need to be initialized once for each node. This is required later e.g. by
 the Weave overlay network as it calculates its virtual Mac address from this datum.
 
-To do so, call the followin Ansible ad-hoc command:
+To do so, call the following Ansible ad-hoc command:
 
 ```
 ansible pis -u pirate -k -i hosts --become -m shell --args "dbus-uuidgen > /etc/machine-id"
 ```
 
-Use "hypriot" as password here. You can also use the script ``
+Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`
 
 ### Basic Node Setup
 
