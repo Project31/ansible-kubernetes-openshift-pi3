@@ -46,7 +46,8 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 ```
 flash --hostname n0 --ssid "mysid" --password "secret" hypriot.zip
 ```
-   You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
+   "mysid" is your WLAN SID and "secret" the corresponding password. You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
+
 4. Repeat step 2. to 3. for each Micro SD card. Please adapt the hostname before each round to **n1**, **n2**, **n3**.
 
 ## Network Setup
