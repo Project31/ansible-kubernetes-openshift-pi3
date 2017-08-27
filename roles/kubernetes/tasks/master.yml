@@ -1,3 +1,23 @@
+- name: Check for an already generated token
+  become: no
+  stat: path={{ playbook_dir }}/run/kubeadm-token.txt
+  delegate_to: localhost
+  register: kubeadm_token
+
+- block:
+  - name: Create a token from master
+    command: kubeadm token generate
+    register: kubeadm_gen_token
+  - name: Copy token to local file 'kubernetes-token'
+    become: no
+    copy: content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
+    delegate_to: localhost
+  when: kubeadm_token.stat.exists == false and mode == "master"
+
+- name: Register token as fact
+  set_fact:
+    kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
+
 - name: Copy init file for kubeadm
   template: src=kubeadm.yml dest=/etc/kubernetes/kubeadm.yml mode=0755
 

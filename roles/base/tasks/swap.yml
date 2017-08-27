@@ -1,4 +1,16 @@
-# Taken directly from http://stackoverflow.com/questions/24765930/add-swap-memory-with-ansible
+# This is not needed for pure Kubernetes use as Kubernetes does not support
+# swap. See also the discussion in https://github.com/kubernetes/kubernetes/issues/7294
+# I keep the file here nevertheless as reference, but its nowhere included for now
+
+# Tasks taken directly from http://stackoverflow.com/questions/24765930/add-swap-memory-with-ansible
+# Usage:
+#
+# - name: Add Swapfile
+#  include: swap.yml
+#  vars:
+#    swap_file_path: "/swapfile"
+#    swap_file_size: "1G"
+
 - name: Set swap_file variable
   set_fact:
     swap_file: "{{ swap_file_path }}"

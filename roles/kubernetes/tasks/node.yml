@@ -1,3 +1,7 @@
+- name: Register token as fact
+  set_fact:
+    kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
+
 - name: Run kubeadm join on node
   command: kubeadm join --token={{ kubeadm_token }} master:6443
 

@@ -1,3 +1,13 @@
+- name: Pin Docker to version {{ docker.version }} (the latest supported by Kubernetes)
+  template: src=docker-apt-pin.txt dest=/etc/apt/preferences.d/docker
+
+- name: Downgrade docker
+  apt:
+    state: present
+    name: docker-engine={{ docker.version }}
+    autoremove: yes
+    force: yes
+
 - name: Prepare docker expose args for service
   set_fact:
     dockerd_extra_args: "{{ '-H tcp://' + inventory_hostname + ':2375' if docker.expose_tcp else '' }}"

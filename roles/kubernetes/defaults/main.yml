@@ -16,4 +16,6 @@ docker:
   # devicemapper or overlay2
   storage_driver: devicemapper
   expose_tcp: true
+  version: "1.12*"
+
 debug_level: 2
