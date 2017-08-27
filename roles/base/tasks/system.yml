@@ -1,53 +1,23 @@
-- name: Add cgroup for Memory limits to bootparams
-  lineinfile:
-    dest: /boot/cmdline.txt
-    regexp: '^(.*?)(\s*cgroup_enable=cpuset\s*)?$'
-    line: '\1 cgroup_enable=cpuset'
-    backrefs: true
-    state: present
-
-- name: Add overlay filesystem module
-  lineinfile: dest=/etc/modules state=present line="overlay" insertafter="EOF"
-
-- name: Load overlay module
-  modprobe: name=overlay state=present
-
 - name: Setup profile
   copy: src=docker_profile.sh dest=/etc/profile.d/docker.sh mode=0644
 
-- name: Set timezone variables
-  copy:
-    content: "{{ timezone }}"
-    dest: /etc/timezone
-    owner: root
-    group: root
-    mode: 0644
-    backup: yes
+- name: Set timezone
+  timezone: name="{{ timezone }}"
 
-- name: update timezone
+- name: Update timezone
   command: dpkg-reconfigure --frontend noninteractive tzdata
 
 - name: Add hosts
   template: src=hosts dest=/etc/hosts
 
-- stat: path=/etc/dhcp/dhclient-enter-hooks.d
+- name: Check DHCP hooks
+  stat: path=/etc/dhcp/dhclient-enter-hooks.d
   register: dhclient_hooks
 - name: Copy hosts to DHCP setup
   template: src=hosts dest=/etc/dhcp
   when: dhclient_hooks.stat.exists
 - name: Add DHCP hook to copy etc hosts
   copy: src=copy_hosts dest=/etc/dhcp/dhclient-enter-hooks.d/ mode=0755
-
-- name: Check for ld-linux-armhf.so.3
-  stat: path=/lib/ld-linux-armhf.so.3
-  register: ld
-
-- name: Link ld-linux-armhf.so.3 --> ld-linux.so.3
-  file:
-    src: /lib/ld-linux-armhf.so.3
-    dest: /lib/ld-linux.so.3
-    state: link
-  when: ld.stat.exists
 
 - name: Set hostname
   hostname: name="{{ name }}"

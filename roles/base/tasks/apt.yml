@@ -4,44 +4,18 @@
     state: present
     force: yes
 
-- name: Add Hypriot Repo Key
-  apt_key: url=https://packagecloud.io/gpg.key
-
-- name: Add Hypriot Repo
-  apt_repository: repo='deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ wheezy main' state=present
-
 - name: Add Kubernetes Repo Key
   apt_key: url=https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
-- name: Temp
-  # Try to pick up 1.6 builds. Switch over to '-unstable' if targeting latest releases
-  apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial-stable main' state=absent
-
 - name: Add Kubernetes Repo
-  # Try to pick up 1.6 builds. Switch over to '-unstable' if targeting latest releases
+  # Try to pick up latest stable builds. Switch over to '-unstable' if targeting latest releases
   apt_repository: repo='deb http://apt.kubernetes.io/ kubernetes-xenial main' state=present
-
-- name: Pin Docker to a version {{ version.docker_version }} (the latest supported by Kubernetes)
-  template: src=docker-apt-pin.txt dest=/etc/apt/preferences.d/docker
 
 - name: Update APT package cache and upgrade
   apt:
     update_cache: yes
     autoremove: yes
     upgrade: yes
-
-- name: Downgrade docker
-  apt:
-    state: present
-    name: docker-engine={{ version.docker_engine }}
-    autoremove: yes
-    force: yes
-
-- name: Set overlay driver for docker
-  lineinfile:
-    dest: /lib/systemd/system/docker.service
-    regexp: '^ExecStart='
-    line: 'ExecStart=/usr/bin/dockerd -H fd:// -s overlay'
 
 - name: Install Packages
   apt:

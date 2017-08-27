@@ -37,4 +37,4 @@
 - name: Waiting for servers
   become: no
   delegate_to: localhost
-  wait_for: host={{ inventory_hostname }} state=started delay=10 timeout=60
+  wait_for: host={{ inventory_hostname }} port=22 state=started delay=10 timeout=60

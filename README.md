@@ -38,7 +38,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.4.0/hypriotos-rpi-v1.4.0.img.zip -o hypriot.zip
+        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.5.0/hypriotos-rpi-v1.5.0.img.zip -o hypriot.zip
 
 2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
 
@@ -103,7 +103,7 @@ After this initial setup is done, the next step is to initialize the base system
 
 ### Init machine-id
 
-Because of a pecularity of Hypriot OS 1.4 which causes every machine id to be the same,
+Because of a pecularity of Hypriot OS 1.5 which causes every machine id to be the same,
 `/etc/machine-id` need to be initialized once for each node. This is required later e.g. by
 the Weave overlay network as it calculates its virtual Mac address from this datum.
 
@@ -113,7 +113,7 @@ To do so, call the following Ansible ad-hoc command:
 ansible pis -u pirate -k -i hosts --become -m shell --args "dbus-uuidgen > /etc/machine-id"
 ```
 
-Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`
+Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`. If you get errors during this command, please check that you don't have stale entries 
 
 ### Basic Node Setup
 
@@ -134,7 +134,6 @@ The following steps will be applied by this command (which may take a bit):
   - iperf
   - mtr
 * Hostname is set to the name of the node configured. Also `/etc/hosts` is setup to contain all nodes with their short names.
-* A swapfile is enabled (just in case)
 
 With this basic setup you have already a working Docker environment.
 
@@ -186,4 +185,5 @@ For the future we plan the following features to add:
 
 ### Acknowledgements
 
-Thanks to Sergio Sisternes for the inspiration to switch to `kubeadm` which makes things much easier and the manual setup of `etcd` and `flanneld` superfluous.
+* Thanks to Sergio Sisternes for the inspiration to switch to `kubeadm` which makes things much easier and the manual setup of `etcd` and `flanneld` superfluous.
+* Many kudos to Robert Peteuil for a thorough review of the Ansible tasks and update information for Hypriot 1.5. This has simplified the role definitions considerably.

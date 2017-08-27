@@ -1,22 +1,8 @@
-- name: Check for an already generated token
-  become: no
-  stat: path={{ playbook_dir }}/run/kubeadm-token.txt
-  delegate_to: localhost
-  register: kubeadm_token
-
-- block:
-  - name: Create a token from master
-    command: kubeadm token generate
-    register: kubeadm_gen_token
-  - name: Copy token to local file 'kubernetes-token'
-    become: no
-    copy: content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
-    delegate_to: localhost
-  when: kubeadm_token.stat.exists == false
-
-- name: Register token as fact
-  set_fact:
-    kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
+- name: Reset if requested
+  command: kubeadm reset
+  when: reset
+  tags:
+    - reset
 
 - name: Check for a running cluster
   command: kubectl get nodes
@@ -25,21 +11,14 @@
   failed_when: kubectl_result.rc == 2
   changed_when: kubectl_result.rc == 1
 
-- set_fact: init_required={{ kubectl_result.rc == 1 or reset }}
-
-- name: Reset if requested
-  command: kubeadm reset
-  when: reset
-  tags:
-    - reset
-
 - block:
-    - name: Setup master
-      include: master.yml
-      when: mode == "master"
 
-    - name: Setup node
-      include: node.yml
-      when: mode == "node"
+  - name: Setup master
+    include: master.yml
+    when: mode == "master"
 
-  when: init_required == true
+  - name: Setup node
+    include: node.yml
+    when: mode == "node"
+
+  when: kubectl_result.rc == 1 or reset
