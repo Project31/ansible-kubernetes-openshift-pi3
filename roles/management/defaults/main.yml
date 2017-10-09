@@ -1,4 +1,4 @@
 images:
-  dashboard: luxas/kubernetes-dashboard:v1.6.0
-  heapster: luxas/heapster:v1.3.0
+  dashboard: luxas/kubernetes-dashboard:v1.6.3
+  heapster: luxas/heapster:v1.4.0
   influxdb: luxas/heapster-influxdb:v1.1.1
