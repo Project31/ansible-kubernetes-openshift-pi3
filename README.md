@@ -38,7 +38,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.5.0/hypriotos-rpi-v1.5.0.img.zip -o hypriot.zip
+        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.6.0/hypriotos-rpi-v1.6.0.img.zip -o hypriot.zip
 
 2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
 
@@ -136,8 +136,6 @@ The following steps will be applied by this command (which may take a bit):
 * Hostname is set to the name of the node configured. Also `/etc/hosts` is setup to contain all nodes with their short names.
 
 With this basic setup you have already a working Docker environment.
-
-**Now its time to reboot the whole cluster since some required boot params has been added. Plug the wire.**
 
 ### Kubernetes Setup
 

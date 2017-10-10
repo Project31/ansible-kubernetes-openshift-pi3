@@ -1,35 +1,28 @@
-- name: Check for an already generated token
-  become: no
-  stat: path={{ playbook_dir }}/run/kubeadm-token.txt
-  delegate_to: localhost
-  register: kubeadm_token
+- name: Copy init file for kubeadm
+  template: src=kubeadm.yml dest=/etc/kubernetes/kubeadm.yml mode=0755
 
-- block:
-  - name: Create a token from master
-    command: kubeadm token generate
-    register: kubeadm_gen_token
-  - name: Copy token to local file 'kubernetes-token'
-    become: no
-    copy: content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
-    delegate_to: localhost
-  when: kubeadm_token.stat.exists == false and mode == "master"
+- name: Clean up /var/lib/kubelet/ 
+  file: path=/var/lib/kubelet/pki state=absent
+    
+- name: Run kubeadm init on master
+  command: kubeadm init --config /etc/kubernetes/kubeadm.yml
+  register: kubeadm_init
+
+- name: Create a dedicated token from master
+  command: kubeadm token create --ttl 0 --groups system:bootstrappers:kubeadm:default-node-token --description "Bootstrap token which does not expire"
+  register: kubeadm_gen_token
+
+- name: Copy token to local file 'kubernetes-token'
+  become: no
+  copy: content={{ kubeadm_gen_token.stdout }} dest={{ playbook_dir }}/run/kubeadm-token.txt
+  delegate_to: localhost
 
 - name: Register token as fact
   set_fact:
     kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
 
-- name: Copy init file for kubeadm
-  template: src=kubeadm.yml dest=/etc/kubernetes/kubeadm.yml mode=0755
-
-- name: Run kubeadm init on master
-#  environment:
-    # Temporary until 1.6 is released
-#    KUBE_HYPERKUBE_IMAGE: luxas/hyperkube:v1.6.0-and-PR-42911
-  command: kubeadm init --config /etc/kubernetes/kubeadm.yml
-  register: kubeadm_init
-
 - name: Copy Kubernetes access config to ~/.kube/config on nodes
-  copy: remote_src=True src=/etc/kubernetes/admin.conf dest=/home/pi/.kube/config owner=pi
+  copy: remote_src=True src=/etc/kubernetes/admin.conf dest=/home/pi/.kube/config owner=pi group=pi
 
 # - debug: var=kubeadm_init.stdout
 

@@ -17,7 +17,7 @@ subjects:
   name: heapster
   namespace: kube-system
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: heapster
@@ -36,6 +36,9 @@ spec:
       tolerations:
       - key: beta.kubernetes.io/arch
         value: arm
+        effect: NoSchedule
+      - key: beta.kubernetes.io/arch
+        value: arm64
         effect: NoSchedule
       serviceAccountName: heapster
       containers:
