@@ -1,6 +1,5 @@
 kind: MasterConfiguration
 apiVersion: kubeadm.k8s.io/v1alpha1
-token: "{{ kubeadm_token }}"
 networking:
   podSubnet: "{{ network.pod_subnet }}"
 #  serviceSubnet: "{{ network.service_subnet }}"
@@ -10,5 +9,4 @@ controllerManagerExtraArgs:
   node-monitor-grace-period: "10s"
 apiServerExtraArgs:
   runtime-config: "api/all=true"
-  feature-gates: "TaintBasedEvictions=true"
-kubernetesVersion: "stable-1.7"
+kubernetesVersion: "latest-1.8"

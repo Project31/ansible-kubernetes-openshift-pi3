@@ -4,7 +4,7 @@
     force: yes
     state: present
   with_items:
-    - kubelet
-    - kubeadm
-    - kubectl
+    - kubelet={{ k8s.version }}
+    - kubeadm={{ k8s.version }}
+    - kubectl={{ k8s.version }}
     - kubernetes-cni

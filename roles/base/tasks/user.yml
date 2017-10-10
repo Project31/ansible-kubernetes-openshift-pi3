@@ -7,7 +7,7 @@
 - name: Add user pi to group docker
   user: name=pi groups=docker,pi,video append=yes shell=/bin/bash
 
-- name: Add pi to to sudoers
+- name: Add pi to sudoers
   lineinfile:
     dest: /etc/sudoers
     state: present

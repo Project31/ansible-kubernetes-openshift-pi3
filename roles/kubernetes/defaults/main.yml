@@ -8,6 +8,7 @@ images:
   weave: weaveworks/weave-kube:2.0.4
   weave_npc: weaveworks/weave-npc:2.0.4
 k8s:
+  version: 1.8.0*
   # Timing is good for demos. Defaults are 5min eviction and 40s node grace period
   # TODO: Not yet put into the k8s configuration
   pod_eviction_timeout: 5s
@@ -16,6 +17,5 @@ docker:
   # devicemapper or overlay2
   storage_driver: devicemapper
   expose_tcp: true
-  version: "1.12*"
-
+  version: "17.03*"
 debug_level: 2
