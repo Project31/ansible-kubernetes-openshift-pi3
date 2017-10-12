@@ -1,7 +1,32 @@
-- name: Create flannel resources
+# Please note, this is still work in progress
+# Especially saving of the iptables rules needs to be fixed
+
+- name: flannel | Install iptables support package
+  apt:
+    name: iptables-persistent
+    force: yes
+    state: present
+
+- name: flannel | Get iptables rules
+  shell: iptables -L
+  register: iptablesrules
+  check_mode: no
+ 
+- name: flannel | Add flannel iptable rules (in)
+  command: /sbin/iptables -A FORWARD -i cni0 -j ACCEPT -m comment --comment "Flannel"
+  when: iptablesrules.stdout.find("Flannel") == -1
+
+- name: flannel | Add flannel iptable rules (out)
+  command: /sbin/iptables -A FORWARD -o cni0 -j ACCEPT -m comment --comment "Flannel"
+  when: iptablesrules.stdout.find("Flannel") == -1
+ 
+- name: flannel | Save iptables
+  command: service iptables-persistent save
+ 
+- name: flannel | Create flannel resources
   template: src=cni/flannel.yml dest=/etc/kubernetes/kube-flannel.yml
 
-- name: Create flannel resources
+- name: flannel | Create flannel resources
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
   command: kubectl create -f /etc/kubernetes/kube-flannel.yml
