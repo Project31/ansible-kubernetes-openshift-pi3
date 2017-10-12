@@ -13,7 +13,7 @@
     dockerd_extra_args: "{{ '-H tcp://' + inventory_hostname + ':2375' if docker.expose_tcp else '' }}"
 
 - name: Update docker service startup
-  template: src=docker.service dest=/etc/systemd/system/docker.service
+  template: src=docker.service dest=/lib/systemd/system/docker.service
   register: result
   notify:
     - restart docker
