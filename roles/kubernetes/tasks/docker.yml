@@ -10,17 +10,25 @@
 
 - name: Prepare docker expose args for service
   set_fact:
-    dockerd_extra_args: "{{ '-H tcp://' + inventory_hostname + ':2375' if docker.expose_tcp else '' }}"
+    dockerd_extra_args: "{{ ', \"hosts\": [ \"fd://\", \"tcp://0.0.0.0:2375\"]' if docker.expose_tcp else '' }}"
 
+- name: Replace the startu command for Docker
+  lineinfile: 
+    dest: /lib/systemd/system/docker.service
+    regexp: '^ExecStart'
+    line: 'ExecStart=/usr/bin/dockerd'
+    state: present
+  register: result_service
+  
 - name: Update docker service startup
-  template: src=docker.service dest=/lib/systemd/system/docker.service
+  template: src=docker_daemon.json dest=/etc/docker/daemon.json
   register: result
   notify:
     - restart docker
 
 - name: Reload systemd when service definition changed
   command: systemctl daemon-reload
-  when: result|changed
+  when: result_service|changed
 
 - name: Notify Docker service right now to restart
   meta: flush_handlers

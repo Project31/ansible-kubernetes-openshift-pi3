@@ -1,0 +1,4 @@
+{ 
+  "storage-driver": "{{ docker.storage_driver }}"
+  {{ dockerd_extra_args }}
+}
