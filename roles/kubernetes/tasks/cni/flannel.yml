@@ -21,7 +21,7 @@
   when: iptablesrules.stdout.find("Flannel") == -1
  
 - name: flannel | Save iptables
-  command: service iptables-persistent save
+  shell: iptables-save > /etc/iptables/rules.v4
  
 - name: flannel | Create flannel resources
   template: src=cni/flannel.yml dest=/etc/kubernetes/kube-flannel.yml
