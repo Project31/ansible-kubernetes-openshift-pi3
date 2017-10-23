@@ -1,18 +1,18 @@
-- name: Pin Docker to version {{ docker.version }} (the latest supported by Kubernetes)
+- name: docker | Pin Docker to version {{ docker.version }} (the latest supported by Kubernetes)
   template: src=docker-apt-pin.txt dest=/etc/apt/preferences.d/docker
 
-- name: Downgrade docker
+- name: docker | Downgrade docker
   apt:
     state: present
     name: docker-engine={{ docker.version }}
     autoremove: yes
     force: yes
 
-- name: Prepare docker expose args for service
+- name: docker | Prepare docker expose args for service
   set_fact:
     dockerd_extra_args: "{{ ', \"hosts\": [ \"fd://\", \"tcp://0.0.0.0:2375\"]' if docker.expose_tcp else '' }}"
 
-- name: Replace the startu command for Docker
+- name: docker | Replace the startup command for Docker
   lineinfile: 
     dest: /lib/systemd/system/docker.service
     regexp: '^ExecStart'
@@ -20,15 +20,15 @@
     state: present
   register: result_service
   
-- name: Update docker service startup
+- name: docker | Update docker service startup
   template: src=docker_daemon.json dest=/etc/docker/daemon.json
   register: result
   notify:
     - restart docker
 
-- name: Reload systemd when service definition changed
+- name: docker | Reload systemd when service definition changed
   command: systemctl daemon-reload
   when: result_service|changed
 
-- name: Notify Docker service right now to restart
+- name: docker | Notify Docker service right now to restart
   meta: flush_handlers
