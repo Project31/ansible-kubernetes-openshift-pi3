@@ -1,21 +1,21 @@
-- name: Register token as fact
+- name: kubeadm-node | Register token as fact
   set_fact:
     kubeadm_token: "{{ lookup('file', playbook_dir + '/run/kubeadm-token.txt') }}"
 
-- name: Clean up /var/lib/kubelet/ 
+- name: kubeadm-node | Clean up /var/lib/kubelet/ 
   file: path=/var/lib/kubelet/pki state=absent
 
-- name: Run kubeadm join on node
+- name: kubeadm-node | Run kubeadm join on node
   command: kubeadm join --token={{ kubeadm_token }} --discovery-token-unsafe-skip-ca-verification master:6443
 
-- name: Wait for /etc/kubernetes/kubelet.conf to be created
+- name: kubeadm-node | Wait for /etc/kubernetes/kubelet.conf to be created
   wait_for: path=/etc/kubernetes/kubelet.conf
   
-- name: Copy Kubernetes access config to ~/.kube/config on nodes
+- name: kubeadm-node | Copy Kubernetes access config to ~/.kube/config on nodes
   copy: remote_src=True src=/etc/kubernetes/kubelet.conf dest=/home/pi/.kube/config owner=pi group=pi
   
-- name: Fix permission for kubelet-client.key
+- name: kubeadm-node | Fix permission for kubelet-client.key
   file: path=/var/lib/kubelet/pki/kubelet-client.key mode="660" group=pi
 
-- name: Fix permission for kubelet.key
+- name: kubeadm-node | Fix permission for kubelet.key
   file: path=/var/lib/kubelet/pki/kubelet.key mode="660" group=pi

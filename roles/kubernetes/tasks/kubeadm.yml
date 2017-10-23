@@ -1,10 +1,10 @@
-- name: Reset if requested
+- name: kubeadm | Reset if requested
   command: kubeadm reset
   when: reset
   tags:
     - reset
 
-- name: Check for a running cluster
+- name: kubeadm | Check for a running cluster
   command: kubectl get nodes
   become_user: pi
   register: kubectl_result
@@ -13,11 +13,11 @@
 
 - block:
 
-  - name: Setup master
+  - name: kubeadm | Setup master
     include: master.yml
     when: mode == "master"
 
-  - name: Setup node
+  - name: kubeadm | Setup node
     include: node.yml
     when: mode == "node"
 

@@ -5,6 +5,9 @@
 - name: Update Docker
   include: docker.yml
 
+- name: Fix iptable rules
+  include: iptables.yml
+  
 - name: Create dir ~/.kube
   file: path=/home/pi/.kube state=directory owner=pi group=users mode=0775
 

@@ -1,5 +1,5 @@
 reset: false
-overlay_network: weave
+overlay_network: flannel
 network:
   service_subnet: 10.200.100.0/24
   pod_subnet: 10.1.0.0/16

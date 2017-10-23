@@ -1,7 +1,7 @@
-- name: Create Weave resource file
+- name: waeve | Create Weave resource file
   template: src=cni/weave.yml dest=/etc/kubernetes/kube-weave.yml
 
-- name: Create Weave resources
+- name: weave | Create Weave resources
   environment:
     KUBECONFIG: /etc/kubernetes/admin.conf
   command: kubectl create -f /etc/kubernetes/kube-weave.yml
