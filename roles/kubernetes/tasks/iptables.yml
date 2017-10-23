@@ -11,10 +11,10 @@
  
 - block:
    
-  - name: iptables | Add flannel iptable rules (in)
+  - name: iptables | Add FORWARD ACCEPT for cni0 (in)
     command: /sbin/iptables -A FORWARD -i cni0 -j ACCEPT -m comment --comment "CNI-Forward-Fix"
 
-  - name: iptables | Add flannel iptable rules (out)
+  - name: iptables | Add FORWARD ACCEPT for cni0 (out)
     command: /sbin/iptables -A FORWARD -o cni0 -j ACCEPT -m comment --comment "CNI-Forward-Fix"
 
   - name: iptables | Save iptables
