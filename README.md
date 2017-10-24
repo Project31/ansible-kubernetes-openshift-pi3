@@ -172,6 +172,12 @@ In the `tools/` directory you find some useful scripts:
 * `reboot_pis.sh` reboot the cluster (needs still a bit of tuning)
 * `init_machine_id.sh` initialize the `/etc/machine-id` to a random value on every host
 
+### FAQ
+
+* _I have random DNS issues when resolving external IP adresses_
+
+One reason for this could be, that your external DNS provider does some nasty things when a resolution fails (which then might be even cached by Kubernetes). E.g. the Deutsche Telekom is known that by default it enables a so called "Navigationshilfe" which redirect for a failed DNS lookup to their own pages. You can turn this off in the "Kundencenter" preferences. More on the symptoms can be found in this [issue](https://github.com/Project31/ansible-kubernetes-openshift-pi3/issues/34)
+
 ### Next steps ...
 
 For the future we plan the following features to add:
@@ -183,5 +189,6 @@ For the future we plan the following features to add:
 
 ### Acknowledgements
 
+* Many thanks goes out to Lucas Käldström whose [kubeadm workshop](https://github.com/luxas/kubeadm-workshop) gave a lot of inspiration to these playbooks.
 * Thanks to Sergio Sisternes for the inspiration to switch to `kubeadm` which makes things much easier and the manual setup of `etcd` and `flanneld` superfluous.
 * Many kudos to Robert Peteuil for a thorough review of the Ansible tasks and update information for Hypriot 1.5. This has simplified the role definitions considerably.
