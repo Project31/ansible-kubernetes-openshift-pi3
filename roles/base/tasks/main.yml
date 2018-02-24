@@ -1,13 +1,13 @@
 ---
 - name: Add and update packages
-  include: apt.yml
+  include_tasks: apt.yml
 
 - name: Setup system parameters (boot, hosts, timzone)
-  include: system.yml
+  include_tasks: system.yml
 
 - name: Configure Wifi
-  include: wifi.yml
+  include_tasks: wifi.yml
   when: wifi is defined
 
 - name: Setup user
-  include: user.yml
+  include_tasks: user.yml

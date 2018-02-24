@@ -38,7 +38,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.6.0/hypriotos-rpi-v1.6.0.img.zip -o hypriot.zip
+        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.7.1/hypriotos-rpi-v1.7.1.img.zip -o hypriot.zip
 
 2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
 
@@ -133,9 +133,39 @@ The following steps will be applied by this command (which may take a bit):
   - hdparm
   - iperf
   - mtr
+  - vim
+  - dnsutils
+  - jq
 * Hostname is set to the name of the node configured. Also `/etc/hosts` is setup to contain all nodes with their short names.
 
 With this basic setup you have already a working Docker environment.
+
+### Ingress
+
+As ingress controller we use traefik. It will get deployed as part of management playbook and will run as DaemonSet.
+
+To test ingress add `<nodeIPAddress> traefik-ui.pi.local dashboard.pi.local` to your `/etc/hosts` file.
+
+For any other resource you want to export - create ingress resource:
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-web-ui
+  namespace: kube-system
+  labels:
+    k8s-app: traefik-ingress-lb
+spec:
+  rules:
+  - host: traefik-ui.pi.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: traefik-service
+          servicePort: admin
+```
 
 ### Kubernetes Setup
 
@@ -184,7 +214,6 @@ For the future we plan the following features to add:
 
 * Volume support
 * Registry
-* Ingress Controller based on traefik
 * OpenShift support
 
 ### Acknowledgements

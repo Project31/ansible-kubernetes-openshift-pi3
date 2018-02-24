@@ -1,12 +1,12 @@
 ---
 - name: Add and update packages
-  include: apt.yml
+  include_tasks: apt.yml
 
 - name: Update Docker
-  include: docker.yml
+  include_tasks: docker.yml
 
 - name: Fix iptable rules
-  include: iptables.yml
+  include_tasks: iptables.yml
   
 - name: Create dir ~/.kube
   file: path=/home/pi/.kube state=directory owner=pi group=users mode=0775
@@ -18,4 +18,4 @@
   template: src=kubernetes_profile.sh dest=/etc/profile.d/kubernetes.sh mode=0644
 
 - name: Install with kubeadm
-  include: kubeadm.yml
+  include_tasks: kubeadm.yml

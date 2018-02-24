@@ -1,13 +1,17 @@
+
 - name: Copy {{ name }}.yml to /etc/kubernetes/apps/
   template: src={{ name }}.yml dest=/etc/kubernetes/apps/{{ name }}.yml
 
 - name: Delete resources for  {{ name }} (if existing)
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
+  delegate_to: "{{ groups.master | first }}"
   command: kubectl delete -f /etc/kubernetes/apps/{{ name }}.yml
   ignore_errors: true
 
 - name: Install resources for {{ name }}
-  environment:
-    KUBECONFIG: /etc/kubernetes/admin.conf
+  delegate_to: "{{ groups.master | first }}"
   command: kubectl create -f /etc/kubernetes/apps/{{ name }}.yml
+
+- name: Label traefik Master
+  delegate_to: "{{ groups.master | first }}"
+  command: kubectl label node n0 nginx-controller=traefik
+  when: name == "traefik"

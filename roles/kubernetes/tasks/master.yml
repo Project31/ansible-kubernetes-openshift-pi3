@@ -32,13 +32,17 @@
     dest: "{{ playbook_dir }}/run/"
     flat: true
 
+#default kubectl location for cli client
+- name: kubeadm-master | Configure master for kubectl
+  command: cp /etc/kubernetes/admin.conf ~/.kube/config
+
 - name: kubeadm-master | Rename cluster configuration
   become: no
   command: mv {{ playbook_dir }}/run/admin.conf {{ playbook_dir }}/run/pi-cluster.cfg
   delegate_to: localhost
 
 - name: kubeadm-master | Install CNI plugin for {{ overlay_network }}
-  include: cni/{{ overlay_network }}.yml
+  include_tasks: cni/{{ overlay_network }}.yml
 
 - name: kubeadm-master | Download cluster configuration
   fetch:
