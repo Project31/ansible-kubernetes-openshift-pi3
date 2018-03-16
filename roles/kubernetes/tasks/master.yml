@@ -1,9 +1,9 @@
 - name: kubeadm-master | Copy init file for kubeadm
   template: src=kubeadm.yml dest=/etc/kubernetes/kubeadm.yml mode=0755
 
-- name: kubeadm-master | Clean up /var/lib/kubelet/ 
+- name: kubeadm-master | Clean up /var/lib/kubelet/
   file: path=/var/lib/kubelet/pki state=absent
-    
+
 - name: kubeadm-master | Run kubeadm init on master
   command: kubeadm init --config /etc/kubernetes/kubeadm.yml
   register: kubeadm_init
@@ -32,6 +32,9 @@
     dest: "{{ playbook_dir }}/run/"
     flat: true
 
+- name: kubeadm-master | Ensure ~/.kube directory
+  file: path=~/.kube state=directory
+
 #default kubectl location for cli client
 - name: kubeadm-master | Configure master for kubectl
   command: cp /etc/kubernetes/admin.conf ~/.kube/config
@@ -49,4 +52,3 @@
     src: "/etc/kubernetes/admin.conf"
     dest: "{{ playbook_dir }}/run/"
     flat: true
-  

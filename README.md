@@ -40,11 +40,11 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
         curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.7.1/hypriotos-rpi-v1.7.1.img.zip -o hypriot.zip
 
-2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
+2. Install Hypriot's [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page. **Important:** For using the latest Hypriot Images >= 1.7.0 please use the Shell script from the master branch. The latest release 0.2.0 does not yet support the new configuration used by Hypriot 1.7.0. The script must be reachable from within your `$PATH` and it must be executable.
 
-3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
+3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run the wrapper script
 ```
-flash --hostname n0 --ssid "mysid" --password "secret" hypriot.zip
+tools/flash-hypriot --hostname n0 --ssid "mysid" --password "secret" --image hypriot.zip
 ```
    "mysid" is your WLAN SID and "secret" the corresponding password. You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
 
@@ -113,7 +113,7 @@ To do so, call the following Ansible ad-hoc command:
 ansible pis -u pirate -k -i hosts --become -m shell --args "dbus-uuidgen > /etc/machine-id"
 ```
 
-Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`. If you get errors during this command, please check that you don't have stale entries 
+Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`. If you get errors during this command, please check that you don't have stale entries
 
 ### Basic Node Setup
 
