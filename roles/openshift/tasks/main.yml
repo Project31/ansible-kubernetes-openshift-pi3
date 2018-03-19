@@ -2,7 +2,7 @@
   service: name=kubelet enabled=false state=stopped
 
 - name: Install OpenShift
-  include: ../../includes/install_binaries.yml
+  include_tasks: install_binaries.yml
   vars:
     binaries:
       name: openshift-origin

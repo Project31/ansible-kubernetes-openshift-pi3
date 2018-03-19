@@ -14,11 +14,11 @@
 - block:
 
   - name: kubeadm | Setup master
-    include: master.yml
+    include_tasks: master.yml
     when: mode == "master"
 
   - name: kubeadm | Setup node
-    include: node.yml
+    include_tasks: node.yml
     when: mode == "node"
 
   when: kubectl_result.rc == 1 or reset

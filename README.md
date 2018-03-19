@@ -38,13 +38,13 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 1. Download the latest Hyoriot image and store it as `hypriot.zip` :
 
-        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.6.0/hypriotos-rpi-v1.6.0.img.zip -o hypriot.zip
+        curl -L https://github.com/hypriot/image-builder-rpi/releases/download/v1.7.1/hypriotos-rpi-v1.7.1.img.zip -o hypriot.zip
 
-2. Install Hypriots' [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page.
+2. Install Hypriot's [flash](https://github.com/hypriot/flash) installer script. Follow the directions on the installation page. **Important:** For using the latest Hypriot Images >= 1.7.0 please use the Shell script from the master branch. The latest release 0.2.0 does not yet support the new configuration used by Hypriot 1.7.0. The script must be reachable from within your `$PATH` and it must be executable.
 
-3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run
+3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run the wrapper script
 ```
-flash --hostname n0 --ssid "mysid" --password "secret" hypriot.zip
+tools/flash-hypriot --hostname n0 --ssid "mysid" --password "secret" --image hypriot.zip
 ```
    "mysid" is your WLAN SID and "secret" the corresponding password. You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
 
@@ -113,7 +113,7 @@ To do so, call the following Ansible ad-hoc command:
 ansible pis -u pirate -k -i hosts --become -m shell --args "dbus-uuidgen > /etc/machine-id"
 ```
 
-Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`. If you get errors during this command, please check that you don't have stale entries 
+Use "hypriot" as password here. You can also use the script `tools/init_machine_id.sh`. If you get errors during this command, please check that you don't have stale entries
 
 ### Basic Node Setup
 
@@ -133,9 +133,39 @@ The following steps will be applied by this command (which may take a bit):
   - hdparm
   - iperf
   - mtr
+  - vim
+  - dnsutils
+  - jq
 * Hostname is set to the name of the node configured. Also `/etc/hosts` is setup to contain all nodes with their short names.
 
 With this basic setup you have already a working Docker environment.
+
+### Ingress
+
+As ingress controller we use traefik. It will get deployed as part of management playbook and will run as DaemonSet.
+
+To test ingress add `<nodeIPAddress> traefik-ui.pi.local dashboard.pi.local` to your `/etc/hosts` file.
+
+For any other resource you want to export - create ingress resource:
+
+```
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: traefik-web-ui
+  namespace: kube-system
+  labels:
+    k8s-app: traefik-ingress-lb
+spec:
+  rules:
+  - host: traefik-ui.pi.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: traefik-service
+          servicePort: admin
+```
 
 ### Kubernetes Setup
 
@@ -184,7 +214,6 @@ For the future we plan the following features to add:
 
 * Volume support
 * Registry
-* Ingress Controller based on traefik
 * OpenShift support
 
 ### Acknowledgements

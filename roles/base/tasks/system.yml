@@ -7,6 +7,17 @@
 - name: Update timezone
   command: dpkg-reconfigure --frontend noninteractive tzdata
 
+- name: Install locale
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: Set default locale
+  copy:
+    content: export LC_ALL=en_US.UTF-8\n
+    dest: /etc/profile.d/default_locale.sh
+    mode: 0755
+
 - name: Add hosts
   template: src=hosts dest=/etc/hosts
 
