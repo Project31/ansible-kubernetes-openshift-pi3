@@ -44,7 +44,7 @@ Thanks to [Hypriot](https://github.com/hypriot/image-builder-rpi/releases/latest
 
 3. Insert you Micro-SD card in your Desktop computer (via an adapter possibly) and run the wrapper script
 ```
-tools/flash-hypriot --hostname n0 --ssid "mysid" --password "secret" --image hypriot.zip
+tools/flash-hypriot.sh --hostname n0 --ssid "mysid" --password "secret" --image hypriot.zip
 ```
    "mysid" is your WLAN SID and "secret" the corresponding password. You will be asked to which device to write. Check this carefully, otherwise you could destroy your Desktop OS if selecting the the wrong device. Typically its something like `/dev/disk2` on OS X, but depends on the number of hard drives you have.
 
