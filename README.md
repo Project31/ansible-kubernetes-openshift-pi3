@@ -221,3 +221,4 @@ For the future we plan the following features to add:
 * Many thanks goes out to Lucas Käldström whose [kubeadm workshop](https://github.com/luxas/kubeadm-workshop) gave a lot of inspiration to these playbooks.
 * Thanks to Sergio Sisternes for the inspiration to switch to `kubeadm` which makes things much easier and the manual setup of `etcd` and `flanneld` superfluous.
 * Many kudos to Robert Peteuil for a thorough review of the Ansible tasks and update information for Hypriot 1.5. This has simplified the role definitions considerably.
+* Thanks to Mangirdas Judeikis for updating the playbooks to Kubernetes 1.9, Ansible 2.4 and introducing Traefik as load balancer.
