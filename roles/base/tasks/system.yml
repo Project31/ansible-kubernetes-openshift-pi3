@@ -14,7 +14,7 @@
 
 - name: Set default locale
   copy:
-    content: export LC_ALL=en_US.UTF-8\n
+    content: export LC_ALL=en_US.UTF-8
     dest: /etc/profile.d/default_locale.sh
     mode: 0755
 
